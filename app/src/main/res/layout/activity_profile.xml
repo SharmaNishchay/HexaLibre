@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/profile_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="Name: User's Name" />
+
+    <TextView
+        android:id="@+id/profile_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/profile_name"
+        android:textSize="16sp"
+        android:text="Email: user@example.com" />
+
+    <TextView
+        android:id="@+id/profile_honor_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/profile_email"
+        android:textSize="16sp"
+        android:text="Honor Score: 0" />
+
+    <TextView
+        android:id="@+id/profile_roll_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/profile_honor_score"
+        android:textSize="16sp"
+        android:text="Roll Number: 0" />
+
+</RelativeLayout>
