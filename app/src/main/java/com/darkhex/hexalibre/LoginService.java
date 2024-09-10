@@ -124,6 +124,8 @@ public class LoginService extends AppCompatActivity {
             Toast.makeText(LoginService.this, "Signed in as: " + account.getEmail(), Toast.LENGTH_LONG).show();
             signOutButton.setVisibility(View.VISIBLE);
             signOutButton.setEnabled(true);
+            Intent home = new Intent(LoginService.this, MainActivity.class);
+            startActivity(home);
         } catch (ApiException e) {
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
             Toast.makeText(LoginService.this, "Sign in failed", Toast.LENGTH_SHORT).show();
