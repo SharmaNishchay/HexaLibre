@@ -25,12 +25,18 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
 
     implementation libs.appcompat
     implementation libs.material
+    implementation libs.navigation.runtime
+    implementation libs.navigation.ui
+    implementation libs.navigation.fragment
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
@@ -38,6 +44,9 @@ dependencies {
     implementation libs.core   // for core QR code generation
     implementation libs.zxing.android.embedded  // for embedding in Android
     implementation libs.mysql.connector.java
-
+    implementation libs.retrofit // Latest Retrofit version
+    implementation libs.converter.gson // Gson converter (optional)
+    implementation libs.okhttp // Latest OkHttp version
+    implementation libs.logging.interceptor // For logging HTTP requests
 
 }
