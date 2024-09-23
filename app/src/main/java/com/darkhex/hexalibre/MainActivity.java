@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
 
         com.darkhex.hexalibre.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-//        MainActivity2 bookListInitializer = new MainActivity2(this);
         setSupportActionBar(binding.appBarMain.toolbar);
 //
         DrawerLayout drawer = binding.drawerLayout;
