@@ -23,11 +23,7 @@ public class HomeFragment extends Fragment {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        MainActivity2 mainActivity2 = new MainActivity2(binding);
-//        AppCompatActivity activity = (AppCompatActivity) getActivity();
-//        if (activity != null) {
-//            MainActivity2 mainActivity2 = new MainActivity2(activity);  // Initialize MainActivity2
-//        }
+        MainActivity2 mainActivity2 = new MainActivity2(root);
         return root;
     }
 
