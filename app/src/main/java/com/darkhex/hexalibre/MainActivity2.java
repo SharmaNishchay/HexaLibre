@@ -1,54 +1,36 @@
 package com.darkhex.hexalibre;
 
-import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.darkhex.hexalibre.databinding.FragmentHomeBinding;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 import java.util.List;
 
 public class MainActivity2 {
 
-    private GoogleSignInClient mGoogleSignInClient;
     private RecyclerView recyclerView;
     private BookAdapter bookAdapter;
 
     // Constructor
-    public MainActivity2(FragmentHomeBinding activity) {
-//        initializeSignIn(activity);
+    public MainActivity2(View activity) {
         initializeRecyclerView(activity);
     }
 
-    // Initialize Google Sign-In
-    private void initializeSignIn(AppCompatActivity activity) {
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(activity, gso);
-
-
-    }
 
     // Initialize RecyclerView
-    private void initializeRecyclerView(FragmentHomeBinding activity) {
+    private void initializeRecyclerView(View activity) {
 
-        recyclerView = activity.getRoot().findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new GridLayoutManager(activity.getRoot().getContext(), 2));
+        recyclerView = activity.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new GridLayoutManager(activity.getContext(), 2));
 
-        Data data = new Data(activity.getRoot().getContext());
+        Data data = new Data(activity.getContext());
         // Fetch books from Node.js server asynchronously
         data.getBooks(new BookFetchCallback() {
             @Override
@@ -56,15 +38,6 @@ public class MainActivity2 {
                 bookAdapter = new BookAdapter(books);
                 recyclerView.setAdapter(bookAdapter);
             }
-        });
-    }
-
-    // Handle the sign-out logic
-    public void signOut(Context context) {
-        mGoogleSignInClient.signOut().addOnCompleteListener((AppCompatActivity) context, task -> {
-            Toast.makeText(context, "Signed Out", Toast.LENGTH_SHORT).show();
-            context.startActivity(new Intent(context, MainActivity.class));
-            ((AppCompatActivity) context).finish();
         });
     }
 }

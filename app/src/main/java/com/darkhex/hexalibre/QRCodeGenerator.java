@@ -20,7 +20,6 @@ public class QRCodeGenerator {
             }
             return bitmap;
         } catch (WriterException e) {
-            e.printStackTrace();
             return null;
         }
     }
