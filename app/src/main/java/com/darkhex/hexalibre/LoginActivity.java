@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -46,7 +47,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         sharedPreferences = getSharedPreferences("CollegePrefs", MODE_PRIVATE);
         String savedCollege = sharedPreferences.getString("selected_college", null);
-
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account != null && savedCollege != null) {
             // User is already signed in, redirect to MainActivity
@@ -59,6 +59,8 @@ public class LoginActivity extends AppCompatActivity {
 
         // Spinner setup
         Spinner collegeSpinner = findViewById(R.id.spinner_colleges);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
         Data data = new Data(this);
         data.getColleges(cols -> {
             List<String> collegeList = new ArrayList<>();
@@ -69,6 +71,8 @@ public class LoginActivity extends AppCompatActivity {
 
             // Set the adapter to the Spinner
             collegeSpinner.setAdapter(adapter);
+            progressBar.setVisibility(View.GONE);
+            collegeSpinner.setVisibility(View.VISIBLE);
         });
 
         com.google.android.gms.common.SignInButton toLoginPage = findViewById(R.id.sign_in_button);
