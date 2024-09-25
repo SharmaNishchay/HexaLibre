@@ -7,7 +7,8 @@
     tools:context=".ui.home.HomeFragment">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:gravity="center">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
@@ -15,6 +16,15 @@
             android:clipToPadding="false"
             android:padding="8dp"
             android:scrollbars="vertical"
-            tools:listitem="@layout/item_book" />
+            tools:listitem="@layout/item_book"
+            android:visibility="gone"/>
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

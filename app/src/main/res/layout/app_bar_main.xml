@@ -17,16 +17,6 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/Theme.Suman.PopupOverlay" >
 
-            <ImageButton
-                android:id="@+id/icon_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginEnd="10dp"
-                android:background="?attr/selectableItemBackground"
-                android:contentDescription="@string/button_description"
-                android:src="@drawable/ic_menu_camera"
-                tools:ignore="TouchTargetSizeCheck" />
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>

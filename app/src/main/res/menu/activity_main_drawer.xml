@@ -7,24 +7,31 @@
         <item
             android:id="@+id/nav_home"
             android:title="@string/menu_home"
+            android:icon="@drawable/ic_home"
             />
         <item
-            android:id="@+id/nav_gallery"
-            android:title="@string/menu_gallery" />
+            android:id="@+id/nav_fine"
+            android:title="@string/menu_gallery"
+            android:icon="@drawable/ic_fine"/>
         <item
-            android:id="@+id/nav_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:id="@+id/nav_order_status"
+            android:title="@string/menu_slideshow"
+            android:icon="@drawable/ic_order"/>
         <item
-            android:id="@+id/HS"
-            android:title="@string/HS"/>
+            android:id="@+id/nav_HS"
+            android:title="@string/HS"
+            android:icon="@drawable/ic_score"/>
         <item
-            android:id="@+id/history"
-            android:title="@string/history"/>
+            android:id="@+id/nav_history"
+            android:title="@string/history"
+            android:icon="@drawable/ic_history"/>
         <item
-            android:id="@+id/sign_out"
+            android:id="@+id/nav_sign_out"
+            android:icon="@drawable/sign_out"
             android:title="@string/sign_out"/>
         <item
-            android:id="@+id/help"
-            android:title="@string/help"/>
+            android:id="@+id/nav_help"
+            android:title="@string/help"
+            android:icon="@drawable/ic_help"/>
     </group>
 </menu>
