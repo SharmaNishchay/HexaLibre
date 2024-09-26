@@ -21,6 +21,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -43,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         setContentView(R.layout.activity_login);
         sharedPreferences = getSharedPreferences("CollegePrefs", MODE_PRIVATE);
         String savedCollege = sharedPreferences.getString("selected_college", null);
