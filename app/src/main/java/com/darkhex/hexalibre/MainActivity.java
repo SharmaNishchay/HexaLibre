@@ -48,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         NavigationView navigationView = binding.navView;
-        View nav_header=navigationView.getHeaderView(0);
-        //profile Setup
+        View nav_header = navigationView.getHeaderView(0);
+        // Profile setup
         TextView disp_name = nav_header.findViewById(R.id.display_name);
         TextView E_mail = nav_header.findViewById(R.id.E_mail);
         String url = getSharedPreferences("CollegePrefs", MODE_PRIVATE).getString("profile_pic", null);
@@ -57,15 +57,17 @@ public class MainActivity extends AppCompatActivity {
         E_mail.setText(getSharedPreferences("CollegePrefs", MODE_PRIVATE).getString("E-mail", null));
         String qr = getSharedPreferences("CollegePrefs", MODE_PRIVATE).getString("Name", null);
         new ProfileActivity(nav_header, url, qr);
-        // Sign-out button logic(part1)
+
+        // Sign-out button logic (part 1)
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(MainActivity.this, gso);
 
-
-        //==================Navigation==============================
+        //================== Navigation ==============================
         setSupportActionBar(binding.appBarMain.toolbar);
+        getSupportActionBar().setTitle("");  // Remove title text from toolbar
+
         DrawerLayout drawer = binding.drawerLayout;
         toggle = new ActionBarDrawerToggle(this, drawer, binding.appBarMain.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -88,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
