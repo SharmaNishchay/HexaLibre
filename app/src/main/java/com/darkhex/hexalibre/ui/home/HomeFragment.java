@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
@@ -31,47 +30,23 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-         mainActivity2= new MainActivity2(root);
+        mainActivity2 = new MainActivity2(root);
 
         requireActivity().addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+                // Inflate menu if you still have other menu items (or you can remove this if no menu items are needed)
                 inflater.inflate(R.menu.menu_home, menu);
-                MenuItem searchItem = menu.findItem(R.id.action_search);
-                SearchView searchView = (SearchView) searchItem.getActionView();
-
-                assert searchView != null;
-                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        // Handle search query submission
-                        performSearch(query);
-                        return true;
-                    }
-
-                    @Override
-                    public boolean onQueryTextChange(String newText) {
-                        // Handle text change in the search view
-                        // You can perform real-time filtering here if needed
-                        performSearch(newText);
-                        return true;
-                    }
-                });
             }
 
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                // Handle menu item selection (if needed)
+                // Handle other menu item selections if needed
                 return false;
             }
         }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
 
         return root;
-    }
-
-    private void performSearch(String query) {
-
-            mainActivity2.filterBooks(query);
     }
 
     @Override
