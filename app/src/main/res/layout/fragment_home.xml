@@ -9,11 +9,11 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="181dp"
-        tools:layout_editor_absoluteY="-16dp">
+        tools:layout_editor_absoluteY="-16dp"
+        android:gravity="top">
         <!-- Elevated TextView -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -51,7 +51,8 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:scrollbars="none"
-                tools:listitem="@layout/category_items"/>
+                tools:listitem="@layout/category_items"
+                android:layout_gravity="top"/>
         </androidx.cardview.widget.CardView>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -61,7 +62,8 @@
             android:clipToPadding="false"
             android:padding="8dp"
             android:visibility="gone"
-            tools:listitem="@layout/item_book" />
+            tools:listitem="@layout/item_book"
+            android:layout_gravity="top"/>
 
         <ProgressBar
             android:id="@+id/progressBar2"
@@ -69,7 +71,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:layout_gravity="center"/>
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

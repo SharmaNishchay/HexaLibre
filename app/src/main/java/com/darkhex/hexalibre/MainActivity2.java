@@ -46,6 +46,7 @@ public class MainActivity2 {
                 progressBar.setVisibility(View.GONE);
                 recyclerViewBooks.setVisibility(View.VISIBLE);
                 recyclerViewCategories.setVisibility(View.VISIBLE);
+
             }
         });
 
@@ -54,6 +55,9 @@ public class MainActivity2 {
         cats.add(new Cat("Category 1", "img1"));
         cats.add(new Cat("Category 2", "img1"));
         cats.add(new Cat("Category 3", "img1"));
+        cats.add(new Cat("Category 4", "img1"));
+        cats.add(new Cat("Category 5", "img1"));
+        cats.add(new Cat("Category 6", "img1"));
         cats.add(new Cat("Category 4", "img1"));
         cats.add(new Cat("Category 5", "img1"));
         cats.add(new Cat("Category 6", "img1"));
