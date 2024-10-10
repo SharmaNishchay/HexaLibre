@@ -1,17 +1,16 @@
 package com.darkhex.hexalibre.ui.home;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.darkhex.hexalibre.MainActivity2;
@@ -23,6 +22,10 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private MainActivity2 mainActivity2;
 
+    public void filterData(String query){
+        mainActivity2.filterBooks(query);
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
@@ -30,22 +33,13 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+
+        Animation fadeIn = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        TextView elevatedTextView = root.findViewById(R.id.elevated_text_view);
+        elevatedTextView.setText(Html.fromHtml(getString(R.string.welcome_message), Html.FROM_HTML_MODE_LEGACY));
+        elevatedTextView.startAnimation(fadeIn);
+        elevatedTextView.setVisibility(View.VISIBLE);
         mainActivity2 = new MainActivity2(root);
-
-        requireActivity().addMenuProvider(new MenuProvider() {
-            @Override
-            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-                // Inflate menu if you still have other menu items (or you can remove this if no menu items are needed)
-                inflater.inflate(R.menu.menu_home, menu);
-            }
-
-            @Override
-            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                // Handle other menu item selections if needed
-                return false;
-            }
-        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
-
         return root;
     }
 
@@ -55,3 +49,4 @@ public class HomeFragment extends Fragment {
         binding = null;
     }
 }
+
