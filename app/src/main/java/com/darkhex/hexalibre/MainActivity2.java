@@ -11,53 +11,68 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
+// MainActivity2 class with book and category setup
 public class MainActivity2 {
 
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerViewBooks;
     private BookAdapter bookAdapter;
+    private RecyclerView recyclerViewCategories;
+    private CategoryAdapter categoryAdapter;
 
     // Constructor
     public MainActivity2(View activity) {
         initializeRecyclerView(activity);
     }
 
-
     // Initialize RecyclerView
     private void initializeRecyclerView(View activity) {
-
-        recyclerView = activity.findViewById(R.id.recycler_view);
+        recyclerViewBooks = activity.findViewById(R.id.recycler_view);
+        recyclerViewCategories = activity.findViewById(R.id.categories);
         ProgressBar progressBar = activity.findViewById(R.id.progressBar2);
         progressBar.setVisibility(View.VISIBLE);
 
         Data data = new Data(activity.getContext());
-        // Fetch books from Node.js server asynchronously
+
+        // Fetch books from server asynchronously
         data.getBooks(new BookFetchCallback() {
             @Override
             public void onBooksFetched(List<Book> books) {
                 bookAdapter = new BookAdapter(books);
-                recyclerView.setAdapter(bookAdapter);
-                recyclerView.setLayoutManager(new GridLayoutManager(activity.getContext(), 2));
+                recyclerViewBooks.setAdapter(bookAdapter);
+                recyclerViewBooks.setLayoutManager(new GridLayoutManager(activity.getContext(), 2));
                 progressBar.setVisibility(View.GONE);
-                recyclerView.setVisibility(View.VISIBLE);
-
+                recyclerViewBooks.setVisibility(View.VISIBLE);
+                recyclerViewCategories.setVisibility(View.VISIBLE);
             }
         });
+
+        // Sample category list for categories
+        List<Cat> cats = new ArrayList<>();
+        cats.add(new Cat("Category 1", "img1"));
+        cats.add(new Cat("Category 2", "img1"));
+        cats.add(new Cat("Category 3", "img1"));
+        cats.add(new Cat("Category 4", "img1"));
+        cats.add(new Cat("Category 5", "img1"));
+        cats.add(new Cat("Category 6", "img1"));
+
+        categoryAdapter = new CategoryAdapter(cats);
+        recyclerViewCategories.setAdapter(categoryAdapter);
+        recyclerViewCategories.setLayoutManager(new GridLayoutManager(activity.getContext(), 3));
     }
 
-    public void filterBooks(String query){
-        if(bookAdapter!=null){
+    // Filter books based on query
+    public void filterBooks(String query) {
+        if (bookAdapter != null) {
             bookAdapter.filterBooks(query);
         }
-
     }
 }
-//--------------------------------------------------------------------------------------------------------------------------
-//============================================================================================================================
 
+//====================================================================
+// Book Class and Book Adapter
 class Book {
     public String name;
     public String imageUrl;
@@ -71,9 +86,10 @@ class Book {
 class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     private final List<Book> books;
     private List<Book> filteredBooks;
+
     public BookAdapter(List<Book> books) {
         this.books = books;
-        this.filteredBooks=new ArrayList<>(books);
+        this.filteredBooks = new ArrayList<>(books); // Initialize filteredBooks
     }
 
     @NonNull
@@ -87,9 +103,8 @@ class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Book book = filteredBooks.get(position);
         holder.nameTextView.setText(book.name);
-
         // Load image using Glide or Picasso
-//        Glide.with(holder.itemView.getContext()).load(book.imageUrl).into(holder.imageView);
+        // Glide.with(holder.itemView.getContext()).load(book.imageUrl).into(holder.imageView);
     }
 
     @Override
@@ -107,6 +122,8 @@ class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             imageView = itemView.findViewById(R.id.image_view);
         }
     }
+
+    // Filter books by query
     public void filterBooks(String query) {
         filteredBooks.clear();
         if (query.isEmpty()) {
@@ -118,6 +135,57 @@ class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
                 }
             }
         }
-        notifyDataSetChanged();
+        notifyDataSetChanged(); // Notify adapter to refresh
+    }
+}
+
+//====================================================================
+// Category Class and Category Adapter
+class Cat {
+    public String name;
+    public String imageUrl;
+
+    public Cat(String name, String imageUrl) {
+        this.name = name;
+        this.imageUrl = imageUrl;
+    }
+}
+
+class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
+    private final List<Cat> categories;
+
+    public CategoryAdapter(List<Cat> categories) {
+        this.categories = categories;
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_items, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Cat category = categories.get(position);
+        holder.nameTextView.setText(category.name);
+        // Load category image
+        // Glide.with(holder.itemView.getContext()).load(category.imageUrl).into(holder.imageView);
+    }
+
+    @Override
+    public int getItemCount() {
+        return categories.size();
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView nameTextView;
+        public ImageView imageView;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            nameTextView = itemView.findViewById(R.id.cat_name);
+            imageView = itemView.findViewById(R.id.cat_img);
+        }
     }
 }

@@ -2,13 +2,17 @@ package com.darkhex.hexalibre;
 import com.darkhex.hexalibre.R;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 
 import android.os.Bundle;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -19,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -26,6 +31,7 @@ import androidx.navigation.ui.NavigationUI;
 
 
 import com.darkhex.hexalibre.databinding.ActivityMainBinding;
+import com.darkhex.hexalibre.ui.home.HomeFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -39,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private AppBarConfiguration appBarConfiguration;
     private ActionBarDrawerToggle toggle;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         disp_name.setText(getSharedPreferences("CollegePrefs", MODE_PRIVATE).getString("Name", null));
         E_mail.setText(getSharedPreferences("CollegePrefs", MODE_PRIVATE).getString("E-mail", null));
         String qr = getSharedPreferences("CollegePrefs", MODE_PRIVATE).getString("Name", null);
-        new ProfileActivity(nav_header, url, qr);
+        new ProfileActivity(nav_header,binding.appBarMain.btnMenu, url, qr);
 
         // Sign-out button logic (part 1)
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -69,22 +73,57 @@ public class MainActivity extends AppCompatActivity {
         //================== Navigation ==============================
         setSupportActionBar(binding.appBarMain.toolbar);
         getSupportActionBar().setTitle("");  // Remove title text from toolbar
+        EditText search=binding.appBarMain.searchBar1;
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Fragment navHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
+                if (navHostFragment != null) {
+                    Fragment currentFragment = navHostFragment.getChildFragmentManager().getPrimaryNavigationFragment();
+                    if (currentFragment instanceof HomeFragment) {
+                        // Pass the search query to HomeFragment
+                        ((HomeFragment) currentFragment).filterData(s.toString());
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
 
         DrawerLayout drawer = binding.drawerLayout;
-        toggle = new ActionBarDrawerToggle(this, drawer, binding.appBarMain.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        ImageButton menuButton = findViewById(R.id.btn_menu);
+        menuButton.setOnClickListener(v -> {
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            } else {
+                drawer.openDrawer(GravityCompat.START);
+            }
+        });
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupWithNavController(navigationView, navController);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-
+                EditText search=binding.appBarMain.searchBar1;
                 if (id == R.id.nav_sign_out) {
                     sign_out();
+                } else if (id==R.id.nav_home) {
+                    search.setVisibility(View.VISIBLE);
+                    NavigationUI.onNavDestinationSelected(item, navController);
                 } else {
                     // Let the Navigation Component handle other navigation items
+                    search.setVisibility(View.GONE);
                     NavigationUI.onNavDestinationSelected(item, navController);
                 }
                 drawer.closeDrawer(GravityCompat.START);
@@ -93,11 +132,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        toggle.syncState(); // Sync the toggle after onCreate
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
