@@ -7,8 +7,8 @@
     android:padding="5dp">
     <ImageView
         android:id="@+id/cat_img"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:scaleType="centerCrop"
         android:contentDescription="@string/nav_header_desc"
         android:src="@mipmap/ic_launcher_round"
