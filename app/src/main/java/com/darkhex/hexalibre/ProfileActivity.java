@@ -20,9 +20,10 @@ import java.util.Random;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    public ProfileActivity(View nav_header,String url,String q){
+    public ProfileActivity(View nav_header,View btn,String url,String q){
         //profile setup
         ImageView profile = nav_header.findViewById(R.id.imageView);
+        ImageButton menu_btn = btn.findViewById(R.id.btn_menu);
 
 
         //Qr setup
@@ -34,14 +35,24 @@ public class ProfileActivity extends AppCompatActivity {
 
         //profile pic setup
         if (!isValidUrl(url) && url != null) {
-            Bitmap uri = createInitialsImage(url);
+            Bitmap uri = createInitialsImage(url,100,100);
             Glide.with(nav_header.getContext()).load(uri).placeholder(R.mipmap.ic_launcher_round).circleCrop().into(profile);
+            Glide.with(nav_header.getContext()).load(uri).placeholder(R.mipmap.ic_launcher_round).circleCrop().into(menu_btn);
         } else {
             Glide.with(nav_header.getContext()).load(url).placeholder(R.mipmap.ic_launcher_round).circleCrop().into(profile);
+            Glide.with(nav_header.getContext()).load(url).placeholder(R.mipmap.ic_launcher_round).circleCrop().into(menu_btn);
         }
 
     }
-
+    public void nav_btn(View nav_header,String url){
+        ImageButton menu_btn = nav_header.findViewById(R.id.btn_menu);
+        if (!isValidUrl(url) && url != null) {
+            Bitmap uri = createInitialsImage(url,200,200);
+            Glide.with(nav_header.getContext()).load(uri).placeholder(R.mipmap.ic_launcher_round).circleCrop().into(menu_btn);
+        } else {
+            Glide.with(nav_header.getContext()).load(url).placeholder(R.mipmap.ic_launcher_round).circleCrop().into(menu_btn);
+        }
+    }
     //Check Url
     public boolean isValidUrl(String urlString) {
         if (urlString == null || urlString.isEmpty()) {
@@ -59,7 +70,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     //Profile picture generator
 
-    private Bitmap createInitialsImage(String displayName) {
+    private Bitmap createInitialsImage(String displayName ,int width,int height) {
 
         String[] parts = displayName.split(" ");
         StringBuilder initials1 = new StringBuilder();
@@ -75,8 +86,6 @@ public class ProfileActivity extends AppCompatActivity {
         else{
             initials = initials1.substring(0, 1).toUpperCase();
         }
-        int width = 100; // Image width
-        int height = 100; // Image height
         float width1= (float) width /2;
         float height1= (float) height /2;
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
