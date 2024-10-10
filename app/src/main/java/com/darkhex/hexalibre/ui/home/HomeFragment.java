@@ -33,6 +33,7 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+
         Animation fadeIn = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         TextView elevatedTextView = root.findViewById(R.id.elevated_text_view);
         elevatedTextView.setText(Html.fromHtml(getString(R.string.welcome_message), Html.FROM_HTML_MODE_LEGACY));
@@ -41,6 +42,7 @@ public class HomeFragment extends Fragment {
         mainActivity2 = new MainActivity2(root);
         return root;
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

@@ -99,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
         DrawerLayout drawer = binding.drawerLayout;
         ImageButton menuButton = findViewById(R.id.btn_menu);
         menuButton.setOnClickListener(v -> {
