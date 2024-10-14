@@ -25,6 +25,8 @@
         <activity android:name=".MainActivity"
             android:exported="false">  <!-- Ensure exported is true for the launcher activity -->
         </activity>
+        <activity android:name=".SignInActivity"
+            android:exported="false"/>
 
     </application>
 </manifest>

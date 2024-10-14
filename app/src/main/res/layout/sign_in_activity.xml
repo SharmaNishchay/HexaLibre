@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".SignInActivity"
+    android:background="@color/black"
+    >
+
+    <!-- CardView to hold form fields -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_sign_in"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:elevation="8dp"
+        android:padding="1dp"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5"
+        android:backgroundTint="#323232"
+        >
+
+        <!-- LinearLayout to arrange fields vertically -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_margin="5dp"
+            android:paddingHorizontal="10dp"
+            >
+            <TextView
+                android:id="@+id/student_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name : "
+                android:layout_marginTop="15dp"
+                android:textSize="17dp"
+                android:textColor="@color/white"/>
+            <TextView
+                android:id="@+id/st_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email : "
+                android:textSize="25dp"
+                android:layout_marginVertical="15dp"
+                android:textColor="@color/white"/>
+
+            <!-- Roll Number EditText -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Roll No."
+                android:textSize="25dp"
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginVertical="3dp"
+                android:textColor="@color/white"/>
+            <EditText
+                android:id="@+id/editTextRollNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Roll No"
+                android:inputType="text"
+                android:padding="12dp"
+                android:background="@drawable/edittext_background"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/black"
+                />
+
+            <!-- Branch EditText -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Branch"
+                android:textSize="25dp"
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginVertical="3dp"
+                android:textColor="@color/white"/>
+            <EditText
+                android:id="@+id/editTextBranch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Branch"
+                android:inputType="text"
+                android:padding="12dp"
+                android:background="@drawable/edittext_background"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/black"/>
+
+            <!-- Semester EditText -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Semester"
+                android:textSize="25dp"
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginVertical="3dp"
+                android:textColor="@color/white"/>
+            <EditText
+                android:id="@+id/editTextSemester"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Semester"
+                android:inputType="number"
+                android:padding="12dp"
+                android:background="@drawable/edittext_background"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/black"/>
+
+            <!-- Submit Button -->
+            <Button
+                android:id="@+id/buttonSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Submit"
+                android:backgroundTint="@color/purple_500"
+                android:textColor="@android:color/white"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

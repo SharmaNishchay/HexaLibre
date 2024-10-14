@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "918260929317",
+    "project_id": "hexalibrary",
+    "storage_bucket": "hexalibrary.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918260929317:android:fe99e5279f50622cd1c0cc",
+        "android_client_info": {
+          "package_name": "com.darkhex.hexalibre"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsXJ-thMpvboxbEVWoKvTWKCe0x9z879c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

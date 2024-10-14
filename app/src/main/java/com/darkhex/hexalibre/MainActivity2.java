@@ -22,6 +22,7 @@ public class MainActivity2 {
     private RecyclerView recyclerViewCategories;
     private CategoryAdapter categoryAdapter;
 
+
     // Constructor
     public MainActivity2(View activity) {
         initializeRecyclerView(activity);
