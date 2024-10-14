@@ -1,24 +1,22 @@
 package com.darkhex.hexalibre;
-import com.darkhex.hexalibre.R;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 
 import android.os.Bundle;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.GravityCompat;
@@ -26,7 +24,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 
@@ -40,11 +37,10 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private AppBarConfiguration mAppBarConfiguration;
     private GoogleSignInClient mGoogleSignInClient;
     private static final String TAG = "MainActivity";
-    private AppBarConfiguration appBarConfiguration;
-    private ActionBarDrawerToggle toggle;
+    private boolean doubleBackToExitPressedOnce = false;
+    private Toast exitToast;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,22 +128,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle ActionBar item clicks
-        if (toggle.onOptionsItemSelected(item)) {
-            return true; // Toggle drawer if hamburger icon is clicked
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
     public void sign_out(){
         mGoogleSignInClient.signOut().addOnCompleteListener(MainActivity.this, task -> {
             MainActivity.this.startActivity(new Intent(MainActivity.this, LoginActivity.class));
             MainActivity.this.finish();
         });
     }
+    @Override
+    public void onBackPressed() {
+        Fragment navHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
+        if (navHostFragment != null) {
+            Fragment currentFragment = navHostFragment.getChildFragmentManager().getPrimaryNavigationFragment();
+            if (currentFragment instanceof HomeFragment) {
+                ((HomeFragment) currentFragment).onBackPressed();
+            }
+            else {
+                super.onBackPressed();
+            }
+        }
+    }
 
+    public void handleDoubleBackPress() {
+        if (doubleBackToExitPressedOnce) {
+            if (exitToast != null) {
+                exitToast.cancel(); // Cancel the previous toast
+            }
+            super.onBackPressed(); // Exit the app
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        exitToast = Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT);
+        exitToast.show();
+
+        // Reset the flag after 2 seconds
+        new Handler(Looper.getMainLooper()).postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
+    }
 
 }

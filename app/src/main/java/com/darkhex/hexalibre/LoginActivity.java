@@ -2,18 +2,12 @@ package com.darkhex.hexalibre;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.net.Uri;
+
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 
@@ -28,19 +22,22 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
         private GoogleSignInClient mGoogleSignInClient;
         private static final String TAG = "LoginActivity";
         private SharedPreferences sharedPreferences;
-
+        FirebaseDatabase db;
+        DatabaseReference reference;
         @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,10 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account != null && savedCollege != null) {
             // User is already signed in, redirect to MainActivity
-            Log.d(TAG, "User already signed in: " + account.getEmail());
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            check_user(account.getDisplayName(), account.getEmail(),"1");
             return;  // Prevent further execution of the onCreate method
         }
 
@@ -137,17 +131,12 @@ public class LoginActivity extends AppCompatActivity {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             // Local Storage
-
             store("profile_pic", account.getPhotoUrl() != null ? account.getPhotoUrl().toString() :
                     account.getDisplayName() != null ? account.getDisplayName() :"H L");
             store("Name",String.valueOf(account.getDisplayName()));
             store("E-mail",String.valueOf(account.getEmail()));
+            check_user(account.getDisplayName(),account.getEmail(),"1");
 
-
-            Log.d(TAG, "signInResult:success, user email: " + account.getEmail());
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
         } catch (ApiException e) {
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
         }
@@ -157,7 +146,29 @@ public class LoginActivity extends AppCompatActivity {
         editor.putString(key,value);
         editor.apply();
     }
+    void check_user(String name, String email,String college){
 
+        User_search userSearch = new User_search();
+        userSearch.searchUserByEmail(email,"email", new UserSearchCallback() {
+            @Override
+            public void onUserFound(String uid) {
+                // Do something with the UID
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
 
+            @Override
+            public void onUserNotFound() {
+                // Handle case where user is not found
+                Intent intent = new Intent(LoginActivity.this, SignInActivity.class);
+                intent.putExtra("Name", name);
+                intent.putExtra("Email",email);
+                intent.putExtra("c_id",college);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
 
 }
