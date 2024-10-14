@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.darkhex.hexalibre.MainActivity2;
+import com.darkhex.hexalibre.MainActivity;
 import com.darkhex.hexalibre.R;
 import com.darkhex.hexalibre.databinding.FragmentHomeBinding;
 
@@ -40,6 +41,7 @@ public class HomeFragment extends Fragment {
         elevatedTextView.startAnimation(fadeIn);
         elevatedTextView.setVisibility(View.VISIBLE);
         mainActivity2 = new MainActivity2(root);
+
         return root;
     }
 
@@ -47,6 +49,11 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+    public void onBackPressed() {
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).handleDoubleBackPress(); // Call the method in MainActivity2 to handle double back press
+        }
     }
 }
 
