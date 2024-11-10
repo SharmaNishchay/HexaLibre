@@ -35,7 +35,7 @@ public class MainActivity2 {
         ProgressBar progressBar = activity.findViewById(R.id.progressBar2);
         progressBar.setVisibility(View.VISIBLE);
 
-        Data data = new Data(activity.getContext());
+        Data data = new Data();
 
         // Fetch books from server asynchronously
         data.getBooks(new BookFetchCallback() {

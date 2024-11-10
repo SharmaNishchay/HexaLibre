@@ -1,7 +1,13 @@
 package com.darkhex.hexalibre;
 
-import android.content.Context;
-import android.widget.Toast;
+import android.util.Log;
+
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,15 +21,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Data {
-
-    private final Context context;
-
-    // Constructor to pass the context
-    public Data(Context context) {
-        this.context = context;
-    }
-
-
+    public static boolean datafetched=false;
     private Retrofit retrofit(String url) {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(180, TimeUnit.SECONDS)
@@ -53,37 +51,37 @@ public class Data {
                     }
                     callback.onBooksFetched(books);
                 } else {
-                    Toast.makeText(context, "Failed to get response", Toast.LENGTH_SHORT).show();
+                    Log.d("Data","Failed to get response");
                 }
             }
 
             @Override
             public void onFailure(Call<List<MyResponse>> call, Throwable t) {
-                Toast.makeText(context, "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d("Data", "Error: " + t.getMessage());
             }
         });
     }
-    public void getColleges(CollegeFetchCallback callback){
-        ApiService_colleges apiService = retrofit("https://application-1odo.onrender.com/").create(ApiService_colleges.class);
-        apiService.getData().enqueue(new Callback<List<MyResponse>>() {
+    public void getColleges(final CollegeFetchCallback callback) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Colleges");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onResponse(Call<List<MyResponse>> call, Response<List<MyResponse>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<MyResponse> data = response.body();
-                    List<String> col = new ArrayList<>();
-                    for (MyResponse item : data) {
-                        col.add(item.get_name());
-                    }
-                    callback.onCollegeFetched(col);
-                } else {
-                    Toast.makeText(context, "Failed to get response", Toast.LENGTH_SHORT).show();
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (datafetched) return;
+                List<String> pathsList = new ArrayList<>();
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    pathsList.add(childSnapshot.getKey());
                 }
+                datafetched = true;
+                Log.d("Data", "Fetched colleges: " + pathsList);
+                // Run callback on the main thread
+                callback.onCollegeFetched(pathsList);
             }
 
             @Override
-            public void onFailure(Call<List<MyResponse>> call, Throwable t) {
-                Toast.makeText(context, "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Data", "Error retrieving data: " + databaseError.getMessage());
             }
         });
     }
+
 }

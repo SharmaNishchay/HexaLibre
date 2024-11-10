@@ -19,6 +19,8 @@ public class User_search {
     public User_search() {
         database = FirebaseDatabase.getInstance();
         usersRef = database.getReference("Users");
+
+
     }
 
     public void searchUserByEmail(String s,String target, UserSearchCallback callback) {

@@ -2,7 +2,6 @@ package com.darkhex.hexalibre;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,137 +21,104 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class LoginActivity extends AppCompatActivity {
 
-        private GoogleSignInClient mGoogleSignInClient;
-        private static final String TAG = "LoginActivity";
-        private SharedPreferences sharedPreferences;
-        FirebaseDatabase db;
-        DatabaseReference reference;
-        @Override
+    private  Spinner collegeSpinner;
+    private ProgressBar progressBar;
+    private GoogleSignInClient mGoogleSignInClient;
+    private SharedPreferences sharedPreferences;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         setContentView(R.layout.activity_login);
+
+        //Already Logged in.
         sharedPreferences = getSharedPreferences("CollegePrefs", MODE_PRIVATE);
         String savedCollege = sharedPreferences.getString("selected_college", null);
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account != null && savedCollege != null) {
-            // User is already signed in, redirect to MainActivity
-            check_user(account.getDisplayName(), account.getEmail(),"1");
-            return;  // Prevent further execution of the onCreate method
+            check_user(account.getDisplayName(), account.getEmail(), "1");
+            return;
         }
 
-        // Spinner setup
-        Spinner collegeSpinner = findViewById(R.id.spinner_colleges);
-        ProgressBar progressBar = findViewById(R.id.progressBar);
+        //Initializing Spinner for college
+        collegeSpinner=findViewById(R.id.spinner_colleges);
+        progressBar  = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
-        Data data = new Data(this);
-        data.getColleges(cols -> {
-            List<String> collegeList = new ArrayList<>();
-            collegeList.add("Select College");
-            collegeList.addAll(cols);
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(LoginActivity.this, android.R.layout.simple_spinner_item, collegeList);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-            // Set the adapter to the Spinner
-            collegeSpinner.setAdapter(adapter);
-            progressBar.setVisibility(View.GONE);
-            collegeSpinner.setVisibility(View.VISIBLE);
-        });
-
-        com.google.android.gms.common.SignInButton toLoginPage = findViewById(R.id.sign_in_button);
-        collegeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        Get_paths p=new Get_paths();
+        p.getPath(new CollegeFetchCallback() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (id != 0) {
-                    // Get the selected item
-                    String selectedCollege = parent.getItemAtPosition(position).toString();
+            public void onCollegeFetched(List<String> cols) {
+                List<String> collegeList=new ArrayList<>();
+                collegeList.add("Select College");
+                collegeList.addAll(cols);
 
-                    // Store the selected college in SharedPreferences
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("selected_college", selectedCollege);
-                    editor.apply();
-
-                    // Show the Google Sign-In button
-                    toLoginPage.setVisibility(View.VISIBLE);
-                    toLoginPage.setEnabled(true);
-                } else {
-                    toLoginPage.setVisibility(View.GONE);
-                    toLoginPage.setEnabled(false);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                toLoginPage.setVisibility(View.GONE);
-                toLoginPage.setEnabled(false);
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(LoginActivity.this, android.R.layout.simple_spinner_item, collegeList);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                collegeSpinner.setAdapter(adapter);
+                setSpinnerAction();
+                progressBar.setVisibility(View.GONE);
+                collegeSpinner.setVisibility(View.VISIBLE);
             }
         });
 
-        // Configure sign-in to request the user's ID, email address, and basic profile
+        // Configure Google Sign-In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .requestProfile()
                 .build();
 
-        // Build a GoogleSignInClient with the options specified by gso
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        // Set up the Google Sign-In button
         findViewById(R.id.sign_in_button).setOnClickListener(v -> {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             signInLauncher.launch(signInIntent);
         });
     }
+    //End of on create
 
-    // Register the ActivityResultLauncher to handle the result of the sign-in intent
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == RESULT_OK) {
                     Intent data = result.getData();
-                    // Handle the sign-in result here
                     Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
                     handleSignInResult(task);
                 }
             });
-
     private void handleSignInResult(@NonNull Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            // Local Storage
-            store("profile_pic", account.getPhotoUrl() != null ? account.getPhotoUrl().toString() :
-                    account.getDisplayName() != null ? account.getDisplayName() :"H L");
-            store("Name",String.valueOf(account.getDisplayName()));
-            store("E-mail",String.valueOf(account.getEmail()));
-            check_user(account.getDisplayName(),account.getEmail(),"1");
-
+            store("profile_pic", account.getPhotoUrl() != null ? account.getPhotoUrl().toString() : account.getDisplayName()!=null ? account.getDisplayName() :"H L");
+            store("Name", account.getDisplayName());
+            store("E-mail", account.getEmail());
+            check_user(account.getDisplayName(), account.getEmail(), "1");
         } catch (ApiException e) {
-            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            Log.d("Login Activity", "signInResult:failed code=" + e.getStatusCode());
         }
     }
-    public  void store(String key, String value){
+    //Storing to cache
+    public void store(String key, String value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(key,value);
+        editor.putString(key, value);
         editor.apply();
     }
-    void check_user(String name, String email,String college){
 
+
+    //Check for existence of user
+    void check_user(String name, String email, String college) {
         User_search userSearch = new User_search();
-        userSearch.searchUserByEmail(email,"email", new UserSearchCallback() {
+        userSearch.searchUserByEmail(email, "email", new UserSearchCallback() {
             @Override
             public void onUserFound(String uid) {
-                // Do something with the UID
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
@@ -160,15 +126,39 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onUserNotFound() {
-                // Handle case where user is not found
                 Intent intent = new Intent(LoginActivity.this, SignInActivity.class);
                 intent.putExtra("Name", name);
-                intent.putExtra("Email",email);
-                intent.putExtra("c_id",college);
+                intent.putExtra("Email", email);
+                intent.putExtra("c_id", college);
                 startActivity(intent);
                 finish();
             }
         });
     }
+    public void setSpinnerAction(){
+        collegeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position != 0) { // Ensure something other than "Select College" is chosen
+                    String selectedCollege = parent.getItemAtPosition(position).toString();
 
+                    // Store selected college
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("selected_college", selectedCollege);
+                    editor.apply();
+
+                    // Show the Google Sign-In button
+                    findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+                } else {
+                    findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Handle the case where nothing is selected
+                findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+            }
+        });
+    }
 }
