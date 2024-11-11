@@ -23,6 +23,7 @@
 
         <!-- College Spinner Logo -->
         <Spinner
+            android:background="#FAFAFA"
             android:id="@+id/spinner_colleges"
             android:layout_width="214dp"
             android:layout_height="wrap_content"
