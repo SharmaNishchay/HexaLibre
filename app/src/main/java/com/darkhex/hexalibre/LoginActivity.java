@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -26,52 +27,57 @@ import com.google.android.gms.tasks.Task;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class LoginActivity extends AppCompatActivity {
 
-    private  Spinner collegeSpinner;
-    private ProgressBar progressBar;
+    private Spinner collegeSpinner;
+    private ProgressBar progressBar ;
     private GoogleSignInClient mGoogleSignInClient;
     private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         setContentView(R.layout.activity_login);
-
-        //Already Logged in.
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
         sharedPreferences = getSharedPreferences("CollegePrefs", MODE_PRIVATE);
         String savedCollege = sharedPreferences.getString("selected_college", null);
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account != null && savedCollege != null) {
-            check_user(account.getDisplayName(), account.getEmail(), "1");
-            return;
+            checkUser(account.getDisplayName(), account.getEmail(), savedCollege, "Stored", userFound -> {
+                if (!userFound) {
+                    setupSpinner();
+                    setupGoogleSignIn();
+                }
+            });
+        }else {
+            setupSpinner();
+            setupGoogleSignIn();
         }
+    }
 
-        //Initializing Spinner for college
-        collegeSpinner=findViewById(R.id.spinner_colleges);
-        progressBar  = findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.VISIBLE);
-        Get_paths p=new Get_paths();
-        p.getPath(new CollegeFetchCallback() {
-            @Override
-            public void onCollegeFetched(List<String> cols) {
-                List<String> collegeList=new ArrayList<>();
-                collegeList.add("Select College");
-                collegeList.addAll(cols);
+    private void setupSpinner() {
+        collegeSpinner = findViewById(R.id.spinner_colleges);
+        progressBar = findViewById(R.id.progressBar);
+//        progressBar.setVisibility(View.VISIBLE);
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(LoginActivity.this, android.R.layout.simple_spinner_item, collegeList);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                collegeSpinner.setAdapter(adapter);
-                setSpinnerAction();
-                progressBar.setVisibility(View.GONE);
-                collegeSpinner.setVisibility(View.VISIBLE);
-            }
+        Get_paths p = new Get_paths();
+        p.getPath(cols -> {
+            List<String> collegeList = new ArrayList<>();
+            collegeList.add("Select College");
+            collegeList.addAll(cols);
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(LoginActivity.this, android.R.layout.simple_spinner_item, collegeList);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            collegeSpinner.setAdapter(adapter);
+            setSpinnerAction();
+            progressBar.setVisibility(View.GONE);
+            collegeSpinner.setVisibility(View.VISIBLE);
         });
+    }
 
-        // Configure Google Sign-In
+    private void setupGoogleSignIn() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .requestProfile()
@@ -83,7 +89,6 @@ public class LoginActivity extends AppCompatActivity {
             signInLauncher.launch(signInIntent);
         });
     }
-    //End of on create
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -94,60 +99,85 @@ public class LoginActivity extends AppCompatActivity {
                     handleSignInResult(task);
                 }
             });
+
     private void handleSignInResult(@NonNull Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            store("profile_pic", account.getPhotoUrl() != null ? account.getPhotoUrl().toString() : account.getDisplayName()!=null ? account.getDisplayName() :"H L");
-            store("Name", account.getDisplayName());
-            store("E-mail", account.getEmail());
-            check_user(account.getDisplayName(), account.getEmail(), "1");
+            storeUserData("profile_pic", account.getPhotoUrl() != null ? account.getPhotoUrl().toString() : account.getDisplayName());
+            storeUserData("Name", account.getDisplayName());
+            storeUserData("E-mail", account.getEmail());
+            String savedCollege = sharedPreferences.getString("selected_college", null);
+            checkUser(account.getDisplayName(), account.getEmail(), savedCollege, "notStored", userFound -> {
+                if (!userFound) {
+                    setupSpinner();
+                    setupGoogleSignIn();
+                }
+            });
         } catch (ApiException e) {
-            Log.d("Login Activity", "signInResult:failed code=" + e.getStatusCode());
+            Toast.makeText(this, "Login Failed: "+e, Toast.LENGTH_SHORT).show();
         }
     }
-    //Storing to cache
-    public void store(String key, String value) {
+
+    private void storeUserData(String key, String value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(key, value);
         editor.apply();
     }
 
-
-    //Check for existence of user
-    void check_user(String name, String email, String college) {
+    private void checkUser(String name, String email, String college, String act,testUser callback) {
         User_search userSearch = new User_search();
-        userSearch.searchUserByEmail(email, "email", new UserSearchCallback() {
+        userSearch.searchUserByEmail("",college, "Name", new UserSearchCallback(){
+
             @Override
             public void onUserFound(String uid) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                userSearch.searchUserByEmail(uid, email, "email", new UserSearchCallback() {
+                    @Override
+                    public void onUserFound(String uid) {
+                        callback.onResult(true);
+                        launchMainActivity(uid);
+                    }
+
+                    @Override
+                    public void onUserNotFound() {
+                        if (act.equals("notStored")) {
+                            launchSignInActivity(name, email, uid);
+                        }
+                        callback.onResult(false);
+                    }
+                });
             }
 
             @Override
             public void onUserNotFound() {
-                Intent intent = new Intent(LoginActivity.this, SignInActivity.class);
-                intent.putExtra("Name", name);
-                intent.putExtra("Email", email);
-                intent.putExtra("c_id", college);
-                startActivity(intent);
-                finish();
+
             }
         });
     }
-    public void setSpinnerAction(){
+
+    private void launchMainActivity(String uid) {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        intent.putExtra("uid", uid);
+        startActivity(intent);
+        finish();
+    }
+
+    private void launchSignInActivity(String name, String email, String college) {
+        Intent intent = new Intent(LoginActivity.this, SignInActivity.class);
+        intent.putExtra("Name", name);
+        intent.putExtra("Email", email);
+        intent.putExtra("c_id", college);
+        startActivity(intent);
+        finish();
+    }
+
+    private void setSpinnerAction() {
         collegeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position != 0) { // Ensure something other than "Select College" is chosen
-                    String selectedCollege = parent.getItemAtPosition(position).toString();
+                String selectedCollege = (String) parent.getItemAtPosition(position);
 
-                    // Store selected college
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("selected_college", selectedCollege);
-                    editor.apply();
-
-                    // Show the Google Sign-In button
+                if (!"Select College".equals(selectedCollege)) {
+                    sharedPreferences.edit().putString("selected_college", selectedCollege).apply();
                     findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
                 } else {
                     findViewById(R.id.sign_in_button).setVisibility(View.GONE);
@@ -156,7 +186,6 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // Handle the case where nothing is selected
                 findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             }
         });

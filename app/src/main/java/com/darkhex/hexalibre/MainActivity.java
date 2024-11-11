@@ -9,7 +9,9 @@ import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -70,6 +72,23 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.appBarMain.toolbar);
         getSupportActionBar().setTitle("");  // Remove title text from toolbar
         EditText search=binding.appBarMain.searchBar1;
+        search.setOnFocusChangeListener((v, hasFocus) -> {
+            Fragment navHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
+            if (navHostFragment != null) {
+                Fragment currentFragment = navHostFragment.getChildFragmentManager().getPrimaryNavigationFragment();
+                if (currentFragment instanceof HomeFragment) {
+                    // Pass the search query to HomeFragment
+                    if (hasFocus) {
+                        ((HomeFragment) currentFragment).toggleCategory(true);
+                    } else {
+                        ((HomeFragment) currentFragment).toggleCategory(false);
+                    }
+
+                }
+            }
+
+        });
+
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -164,5 +183,27 @@ public class MainActivity extends AppCompatActivity {
         // Reset the flag after 2 seconds
         new Handler(Looper.getMainLooper()).postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View currentFocus = getCurrentFocus();
+            if (currentFocus instanceof EditText) {
+                int[] location = new int[2];
+                currentFocus.getLocationOnScreen(location);
 
+                float x = event.getRawX() + currentFocus.getLeft() - location[0];
+                float y = event.getRawY() + currentFocus.getTop() - location[1];
+
+                if (x < currentFocus.getLeft() || x >= currentFocus.getRight() ||
+                        y < currentFocus.getTop() || y >= currentFocus.getBottom()) {
+                    currentFocus.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    if (imm != null) {
+                        imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+                    }
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event);
+    }
 }

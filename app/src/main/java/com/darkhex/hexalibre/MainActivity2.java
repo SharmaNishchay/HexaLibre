@@ -35,21 +35,21 @@ public class MainActivity2 {
         ProgressBar progressBar = activity.findViewById(R.id.progressBar2);
         progressBar.setVisibility(View.VISIBLE);
 
-        Data data = new Data();
+//        Data data = new Data();
 
         // Fetch books from server asynchronously
-        data.getBooks(new BookFetchCallback() {
-            @Override
-            public void onBooksFetched(List<Book> books) {
-                bookAdapter = new BookAdapter(books);
-                recyclerViewBooks.setAdapter(bookAdapter);
-                recyclerViewBooks.setLayoutManager(new GridLayoutManager(activity.getContext(), 2));
-                progressBar.setVisibility(View.GONE);
-                recyclerViewBooks.setVisibility(View.VISIBLE);
-                recyclerViewCategories.setVisibility(View.VISIBLE);
-
-            }
-        });
+//        data.getBooks(new BookFetchCallback() {
+//            @Override
+//            public void onBooksFetched(List<Book> books) {
+//                bookAdapter = new BookAdapter(books);
+//                recyclerViewBooks.setAdapter(bookAdapter);
+//                recyclerViewBooks.setLayoutManager(new GridLayoutManager(activity.getContext(), 2));
+//                progressBar.setVisibility(View.GONE);
+//                recyclerViewBooks.setVisibility(View.VISIBLE);
+////                recyclerViewCategories.setVisibility(View.VISIBLE);
+//
+//            }
+//        });
 
         // Sample category list for categories
         List<Cat> cats = new ArrayList<>();
@@ -66,6 +66,31 @@ public class MainActivity2 {
         categoryAdapter = new CategoryAdapter(cats);
         recyclerViewCategories.setAdapter(categoryAdapter);
         recyclerViewCategories.setLayoutManager(new GridLayoutManager(activity.getContext(), 3));
+        recyclerViewCategories.setVisibility(View.VISIBLE);
+
+
+        List<Book>books=new ArrayList<>();
+        books.add(new Book("Book1","img"));
+        books.add(new Book("Book2","img"));
+        books.add(new Book("Book3","img"));
+        books.add(new Book("Book4","img"));
+        books.add(new Book("Book5","img"));
+        books.add(new Book("Book6","img"));
+        books.add(new Book("Book7","img"));
+        books.add(new Book("Book8","img"));
+        books.add(new Book("Book9","img"));
+        books.add(new Book("Book10","img"));
+        books.add(new Book("Book11","img"));
+        books.add(new Book("Book12","img"));
+        books.add(new Book("Book13","img"));
+        books.add(new Book("Book14","img"));
+        books.add(new Book("Book15","img"));
+        books.add(new Book("Book16","img"));
+        bookAdapter = new BookAdapter(books);
+        recyclerViewBooks.setAdapter(bookAdapter);
+        recyclerViewBooks.setLayoutManager(new GridLayoutManager(activity.getContext(), 2));
+        progressBar.setVisibility(View.GONE);
+        recyclerViewBooks.setVisibility(View.VISIBLE);
     }
 
     // Filter books based on query
