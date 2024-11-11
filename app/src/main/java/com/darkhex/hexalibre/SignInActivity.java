@@ -51,14 +51,14 @@ public class SignInActivity extends AppCompatActivity {
                 Toast.makeText(SignInActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             } else {
                 // Handle form submission
-                user(rollNo,branch,semester,uid);
+                user(rollNo,branch,semester,uid,"College1");
 
             }
         });
     }
-    public void user(String rollNo,String branch, String semester,String uid){
+    public void user(String rollNo,String branch, String semester,String uid,String college){
         User_search userSearch = new User_search();
-        userSearch.searchUserByEmail(rollNo,"rollNo", new UserSearchCallback() {
+        userSearch.searchUserByEmail(college,rollNo,"rollNo", new UserSearchCallback() {
             @Override
             public void onUserFound(String uid) {
                 // Do something with the UID
@@ -75,7 +75,7 @@ public class SignInActivity extends AppCompatActivity {
 
     public void AddUser(String rollNo,String branch, String semester,String uid){
         db=FirebaseDatabase.getInstance();
-        reference= db.getReference("Users");
+        reference= db.getReference("Colleges").child("College1").child("Users");
         String name=intent.getStringExtra("Name");
         String Email=intent.getStringExtra("Email");
         UserProfile users=new UserProfile(name,Email,rollNo,branch,semester,uid);
@@ -83,7 +83,7 @@ public class SignInActivity extends AppCompatActivity {
         reference.child(uid).setValue(users).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Log.d("LoginActivity","User Added");
+
                 Intent intent1=new Intent(SignInActivity.this,MainActivity.class);
                 startActivity(intent1);
             }

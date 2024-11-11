@@ -13,6 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Get_paths {
     private boolean data=false;
@@ -26,7 +27,7 @@ public class Get_paths {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<String>paths=new ArrayList<>();
                 for (DataSnapshot childSnapshot : snapshot.getChildren()){
-                    paths.add(childSnapshot.getKey());
+                    paths.add(Objects.requireNonNull(childSnapshot.child("Name").getValue()).toString());
                 }
                 callback.onCollegeFetched(paths);
             }

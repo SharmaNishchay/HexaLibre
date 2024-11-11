@@ -54,6 +54,12 @@ public class HomeFragment extends Fragment {
     public void filterData(String query){
         mainActivity2.filterBooks(query);
     }
+    public void toggleCategory(boolean b){
+        if(b)
+            binding.categories.setVisibility(View.GONE);
+        else
+            binding.categories.setVisibility(View.VISIBLE);
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -90,8 +96,10 @@ public class HomeFragment extends Fragment {
     private void toggleCamera() {
         if (isCameraActive) {
             stopCamera();  // Method to stop the camera
+            binding.scrollMenu.setVisibility(View.VISIBLE);
         } else {
             startCamera();
+            binding.scrollMenu.setVisibility(View.GONE);
         }
     }
     private void initializeCamera() {
