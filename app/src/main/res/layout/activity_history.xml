@@ -6,67 +6,153 @@
     android:padding="16dp"
     android:background="#1f2122">
 
-    <!-- Example History Item -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
 
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Repeat this block for each history item -->
+            <!-- First Book: Issued -->
             <LinearLayout
-                android:background= "#FAFAFA"
+                android:background="#FAFAFA"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="12dp"
                 android:layout_marginBottom="12dp">
 
-                <!-- Book Title and Status Row -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
+                    android:orientation="horizontal">
+
                     <TextView
-                        android:id="@+id/tvBookTitle"
+                        android:id="@+id/tvBookTitle1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="The Great Gatsby"
-                        android:textColor="#333"
-                        android:textStyle="bold"
-                        android:textSize="16sp" />
+                        style="@style/TitleText" />
 
                     <TextView
-                        android:id="@+id/tvActionStatus"
+                        android:id="@+id/tvActionStatus1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
                         android:text="Issued"
-                        android:textColor="#4CAF50"
-                        android:textStyle="bold" />
+                        style="@style/IssuedText" />
+
                 </LinearLayout>
 
-                <!-- Date and Other Details Row -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="4dp">
+
                     <TextView
-                        android:id="@+id/tvIssueDate"
+                        android:id="@+id/tvIssueDate1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Issued on: 10 Nov 2024"
-                        android:textColor="#666"
-                        android:textSize="14sp" />
-                    <!-- Add more details here if needed -->
+                        style="@style/HistoryText" />
                 </LinearLayout>
             </LinearLayout>
-            <!-- End of History Item Block -->
+
+            <!-- Second Book: Returned -->
+            <LinearLayout
+                android:background="#FAFAFA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvBookTitle2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1984"
+                        style="@style/TitleText" />
+
+                    <TextView
+                        android:id="@+id/tvActionStatus2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Returned"
+                        style="@style/ReturnedText" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:id="@+id/tvReturnDate2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Returned on: 08 Nov 2024"
+                        style="@style/HistoryText" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Third Book: On Hold -->
+            <LinearLayout
+                android:background="#FAFAFA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvBookTitle3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="To Kill a Mockingbird"
+                        style="@style/TitleText" />
+
+                    <TextView
+                        android:id="@+id/tvActionStatus3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="On Hold"
+                        style="@style/onHoldText" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:id="@+id/tvHoldDate3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="On Hold since: 05 Nov 2024"
+                        style="@style/HistoryText" />
+                </LinearLayout>
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
