@@ -119,7 +119,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Submit"
-                android:backgroundTint="@color/purple_500"
+                android:backgroundTint="#3b5998"
                 android:textColor="@android:color/white"
                 android:layout_gravity="center"/>
         </LinearLayout>

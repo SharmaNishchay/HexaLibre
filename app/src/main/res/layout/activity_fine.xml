@@ -1,0 +1,152 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#1f2122">
+
+    <!-- ScrollView to hold multiple fines -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
+
+            <!-- LinearLayout for each Fine Item -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="#ffffff"
+                android:elevation="4dp"
+                android:radius="8dp"
+>
+
+                <!-- Fine Title Header -->
+                <TextView
+                    android:id="@+id/headerText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fine Details"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#333333"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Book Title Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:id="@+id/bookTitleLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Book Title:"
+                        android:textSize="16sp"
+                        android:textColor="#333333"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:id="@+id/bookTitleValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="The Great Gatsby"
+                        android:textSize="16sp"
+                        android:textColor="#555555" />
+                </LinearLayout>
+
+                <!-- Fine Amount Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:id="@+id/fineAmountLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fine Amount:"
+                        android:textSize="16sp"
+                        android:textColor="#333333"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/fineAmountValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="₹50"
+                        android:textSize="16sp"
+                        android:textColor="#FF5722" />
+                </LinearLayout>
+
+                <!-- Due Date Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:id="@+id/dueDateLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Due Date:"
+                        android:textSize="16sp"
+                        android:textColor="#333333"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:id="@+id/dueDateValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="10th Nov 2024"
+                        android:textSize="16sp"
+                        android:textColor="#555555" />
+                </LinearLayout>
+
+                <!-- Fine Explanation Row -->
+                <TextView
+                    android:id="@+id/fineExplanationLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fine Explanation:"
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:id="@+id/fineExplanationValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="This fine was applied due to a late return of the book."
+                    android:textSize="16sp"
+                    android:textColor="#555555"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- Placeholder Pay Button (not linked to anything) -->
+                <Button
+                    android:id="@+id/payButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#3b5998"
+                    android:text="Pay"
+                    android:textColor="#ffffff"
+                    android:enabled="false"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="8dp"/>
+            </LinearLayout>
+
+            <!-- Add more Fine Items dynamically here by adding new LinearLayouts like above -->
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
