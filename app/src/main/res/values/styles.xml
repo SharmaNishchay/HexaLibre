@@ -14,4 +14,7 @@
     <style name="ReturnedText">
         <item name="android:textColor">#FF5722</item>
     </style>
+    <style name="onHoldText">
+        <item name="android:textColor">#0000CD</item>
+    </style>
 </resources>
