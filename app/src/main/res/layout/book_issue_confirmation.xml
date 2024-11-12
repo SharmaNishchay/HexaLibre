@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp"
+    android:background="#000000">
+
+    <!-- Checkmark Image -->
+    <FrameLayout
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/check"
+            android:scaleType="centerInside"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+    <!-- Confirmation Text -->
+    <TextView
+        android:id="@+id/issue_confirmation_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Book Issued Successfully!"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"/>
+
+    <!-- Issue Date and Time -->
+    <TextView
+        android:id="@+id/issue_date_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Issued on: 2024-11-12 10:30 AM"
+        android:textSize="16sp"
+        android:textColor="#D3D3D3"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Invoice Number -->
+    <TextView
+        android:id="@+id/invoice_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Invoice No: 123456"
+        android:textSize="16sp"
+        android:textColor="#D3D3D3"
+        android:gravity="center"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- Rounded Button -->
+    <Button
+        android:id="@+id/btn_back_to_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back to Home"
+        android:textColor="#FFFFFF"
+        android:background="#3b5998"
+    android:padding="12dp"
+    android:layout_marginTop="8dp"/>
+
+</LinearLayout>
