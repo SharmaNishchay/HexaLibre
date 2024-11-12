@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="#1f2122">
+    android:background="#000000">
 
     <!-- FAQ Header -->
     <TextView
@@ -26,7 +26,7 @@
         android:divider="@android:color/darker_gray"
         android:dividerHeight="1dp"
         android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
-        android:background="#FAFAFA" />
+        android:background="#1f2122" />
 
     <!-- Footer Section for Contact Us -->
     <LinearLayout

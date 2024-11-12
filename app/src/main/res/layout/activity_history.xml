@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="#1f2122">
+    android:background="#000000">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
 
             <!-- First Book: Issued -->
             <LinearLayout
-                android:background="#FAFAFA"
+                android:background="#1f2122"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -63,7 +63,7 @@
 
             <!-- Second Book: Returned -->
             <LinearLayout
-                android:background="#FAFAFA"
+                android:background="#1f2122"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -109,7 +109,7 @@
 
             <!-- Third Book: On Hold -->
             <LinearLayout
-                android:background="#FAFAFA"
+                android:background="#1f2122"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
