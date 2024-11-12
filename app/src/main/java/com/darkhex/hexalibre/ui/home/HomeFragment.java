@@ -39,9 +39,18 @@ import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.common.InputImage;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class HomeFragment extends Fragment {
 
@@ -84,22 +93,22 @@ public class HomeFragment extends Fragment {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, 101);
         } else {
             initializeCamera();
+            binding.scrollMenu.setVisibility(View.GONE);
         }
     }
     private void stopCamera() {
         if (cameraProvider != null) {
             cameraProvider.unbindAll();
         }
+        binding.scrollMenu.setVisibility(View.VISIBLE);
         binding.previewView.setVisibility(View.GONE);
         isCameraActive = false;
     }
     private void toggleCamera() {
         if (isCameraActive) {
             stopCamera();  // Method to stop the camera
-            binding.scrollMenu.setVisibility(View.VISIBLE);
         } else {
             startCamera();
-            binding.scrollMenu.setVisibility(View.GONE);
         }
     }
     private void initializeCamera() {
@@ -151,11 +160,13 @@ public class HomeFragment extends Fragment {
                         String rawValue="";
                         for (Barcode barcode : barcodes) {
                             rawValue = barcode.getRawValue();
-                            Toast.makeText(requireContext(), "Barcode: " + rawValue, Toast.LENGTH_SHORT).show();
+                            Log.d("Home","All codes : "+rawValue);
                         }
+
                         if(rawValue!=null&& !rawValue.isEmpty()) {  // Check if rawValue is not null and not empty
+                            Toast.makeText(requireContext(), "Barcode: " + rawValue, Toast.LENGTH_SHORT).show();
                             stopCamera();
-                            bs.searchUserByEmail(rawValue.toString(), new BookSearchCallback() {
+                            bs.searchUserByEmail(rawValue, new BookSearchCallback() {
                                 @Override
                                 public void onBookFound(String uid) {
                                     Log.d("Home", uid);
@@ -163,8 +174,9 @@ public class HomeFragment extends Fragment {
                                 }
 
                                 @Override
-                                public void onBookNotFound() {
-                                    Log.d("Home", "Book Not found");
+                                public void onBookNotFound(String s) {
+                                    Log.d("Home", "Book Not found with ISBN: "+s);
+                                    showPreview(s);
                                 }
                             });
 
@@ -188,6 +200,69 @@ public class HomeFragment extends Fragment {
                 })
                 .show();
     }
+
+
+    private void showPreview(String isbn) {
+        OkHttpClient client = new OkHttpClient();
+        String url = "https://openlibrary.org/api/books?bibkeys=ISBN:" + isbn + "&format=json&jscmd=data";
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                requireActivity().runOnUiThread(() ->
+                        Log.d("Home","Failed to fetch data")
+                );
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                if (response.isSuccessful() && response.body() != null) {
+                    String responseData = response.body().string();
+                    Log.d("Home","Success to fetch data "+isbn);
+                    try {
+                        JSONObject jsonObject = new JSONObject(responseData);
+                        JSONObject bookData = jsonObject.getJSONObject("ISBN:" + isbn);
+
+                        String title = bookData.optString("title", "Unknown Title");
+                        Log.d("Home","Title: "+title);
+                        String author = "Unknown Author";
+
+                        if (bookData.has("authors")) {
+                            JSONObject authorObject = bookData.getJSONArray("authors").getJSONObject(0);
+                            author = authorObject.optString("name", "Unknown Author");
+                            Log.d("Home","Author: "+author);
+                        }
+
+                        String finalAuthor = author;
+                        String finalTitle = title;
+
+                        requireActivity().runOnUiThread(() -> {
+                            new AlertDialog.Builder(requireContext())
+                                    .setTitle("Book Found")
+                                    .setMessage("Do you want to select the book: " + finalTitle + " by " + finalAuthor + "?")
+                                    .setPositiveButton("Yes", (dialog, which) -> {
+                                        Toast.makeText(requireContext(), "Book issued: " + finalTitle, Toast.LENGTH_SHORT).show();
+                                        // Additional actions if needed
+                                    })
+                                    .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                                    .show();
+                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        requireActivity().runOnUiThread(() ->
+                                Toast.makeText(requireContext(), "Error parsing book details", Toast.LENGTH_SHORT).show()
+                        );
+                    }
+                }
+            }
+        });
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
