@@ -20,6 +20,8 @@ import java.util.Random;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    public ProfileActivity(){}
+
     public ProfileActivity(View nav_header,View btn,String url,String q){
         //profile setup
         ImageView profile = nav_header.findViewById(R.id.imageView);
