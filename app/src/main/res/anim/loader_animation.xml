@@ -1,0 +1,7 @@
+<!-- res/anim/loader_animation.xml -->
+<translate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="1200"
+    android:fromXDelta="-100%"
+    android:toXDelta="100%"
+    android:repeatCount="infinite"
+    android:interpolator="@android:anim/linear_interpolator" />

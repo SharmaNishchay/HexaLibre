@@ -1,4 +1,9 @@
 <resources>
+        <style name="CustomSpinnerStyle">
+            <item name="android:textColor">#FFFFFF</item> <!-- White text color -->
+            <item name="android:background">#1f2122</item> <!-- Spinner background -->
+        </style>
+
     <style name="HistoryText">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">#FAFAFA</item>
