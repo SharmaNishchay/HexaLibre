@@ -19,9 +19,9 @@
 
     <fragment
         android:id="@+id/nav_order_status"
-        android:name="com.darkhex.hexalibre.ui.honorscore.HonorscoreFragment"
+        android:name="com.darkhex.hexalibre.ui.history.HistoryFragment"
         android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_history" />
     <fragment
         android:id="@+id/nav_HS"
         android:name="com.darkhex.hexalibre.ui.honorscore.HonorscoreFragment"
@@ -31,7 +31,7 @@
         android:id="@+id/nav_history"
         android:name="com.darkhex.hexalibre.ui.history.HistoryFragment"
         android:label="@string/menu_slideshow"
-        tools:layout="@layout/activity_history" />
+        tools:layout="@layout/fragment_history" />
     <fragment
         android:id="@+id/nav_help"
         android:name="com.darkhex.hexalibre.ui.help.HelpFragment"

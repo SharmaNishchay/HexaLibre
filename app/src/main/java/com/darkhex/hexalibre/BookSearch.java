@@ -35,14 +35,14 @@ public class BookSearch {
                     callback.onBookFound(bookName);
                 } else {
                     Log.d("FirebaseSearch", "No book found with the specified path.");
-                    callback.onBookNotFound();
+                    callback.onBookNotFound(s);
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e("FirebaseSearch", "Error: " + databaseError.getMessage());
-                callback.onBookNotFound();
+                callback.onBookNotFound("Error");
             }
         });
     }

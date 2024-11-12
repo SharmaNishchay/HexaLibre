@@ -17,8 +17,7 @@ public class FineFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        FineViewModel galleryViewModel =
-                new ViewModelProvider(this).get(FineViewModel.class);
+        FineViewModel galleryViewModel =new ViewModelProvider(this).get(FineViewModel.class);
 
         binding = ActivityFineBinding.inflate(inflater, container, false);
 
