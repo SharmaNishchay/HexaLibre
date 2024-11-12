@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
 //        progressBar.setVisibility(View.VISIBLE);
 
         Get_paths p = new Get_paths();
-        p.getPath(cols -> {
+        p.getPath("Colleges",cols -> {
             List<String> collegeList = new ArrayList<>();
             collegeList.add("Select College");
             collegeList.addAll(cols);

@@ -1,85 +1,107 @@
 package com.darkhex.hexalibre;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.CountDownLatch;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.OkHttpClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class Data {
-    public static boolean datafetched=false;
-    private Retrofit retrofit(String url) {
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(180, TimeUnit.SECONDS)
-                .readTimeout(180, TimeUnit.SECONDS)
-                .writeTimeout(180, TimeUnit.SECONDS)
-                .build();
+    Handler mainHandler = new Handler(Looper.getMainLooper());
 
-        return new Retrofit.Builder()
-                .baseUrl(url)
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-    }
+    public void Allbooks(List<String> isbns, BookFetchCallback callback) {
+        List<Book> books = new ArrayList<>();
+        CountDownLatch latch = new CountDownLatch(isbns.size());  // Track completion of all requests
 
-    // Fetch data from the server asynchronously
-    public void getBooks(BookFetchCallback callback) {
-        ApiService apiService = retrofit("https://backend-ax01.onrender.com/").create(ApiService.class);
+        for (String isbn : isbns) {
+            showPreview(isbn, new oneBookCallback() {
+                @Override
+                public void onBooksFetched(String title, String url) {
+                    books.add(new Book(title, url));
+                    latch.countDown();  // Decrement the latch count when a book is fetched
+                }
 
-        apiService.getData().enqueue(new Callback<List<MyResponse>>() {
-            @Override
-            public void onResponse(Call<List<MyResponse>> call, Response<List<MyResponse>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<MyResponse> data = response.body();
-                    List<Book> books = new ArrayList<>();
-                    for (MyResponse item : data) {
-                        books.add(new Book(item.getP_name(), "https://example.com/book1.jpg"));
+                @Override
+                public void onBook_notFetched() {
+                    latch.countDown();
+                }
+            });
+        }
+
+        // Run a separate thread to wait for all requests to complete
+        new Thread(() -> {
+            try {
+                latch.await();  // Wait for all requests to finish
+                mainHandler.post(() -> {
+                    if (!books.isEmpty()) {
+                        callback.onBooksFetched(books);  // Only call callback after all requests are completed
                     }
-                    callback.onBooksFetched(books);
-                } else {
-                    Log.d("Data","Failed to get response");
-                }
+                });
+            }  catch (InterruptedException e) {
+                Log.e("Data", "Interrupted while waiting for books to fetch", e);
             }
-
-            @Override
-            public void onFailure(Call<List<MyResponse>> call, Throwable t) {
-                Log.d("Data", "Error: " + t.getMessage());
-            }
-        });
+        }).start();
     }
-    public void getColleges(final CollegeFetchCallback callback) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Colleges");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+
+    public void showPreview(String isbn, oneBookCallback callback) {
+        OkHttpClient client = new OkHttpClient();
+        String url = "https://openlibrary.org/api/books?bibkeys=ISBN:" + isbn + "&format=json&jscmd=data";
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (datafetched) return;
-                List<String> pathsList = new ArrayList<>();
-                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                    pathsList.add(childSnapshot.getKey());
-                }
-                datafetched = true;
-                Log.d("Data", "Fetched colleges: " + pathsList);
-                // Run callback on the main thread
-                callback.onCollegeFetched(pathsList);
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                Log.d("Data", "Failed to fetch data: " + e.getMessage());
+                callback.onBook_notFetched();  // Invoke callback even on failure
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("Data", "Error retrieving data: " + databaseError.getMessage());
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                if (response.isSuccessful() && response.body() != null) {
+                    String responseData = response.body().string();
+                    Log.d("Data", "Success to fetch data for ISBN " + isbn);
+                    try {
+                        JSONObject jsonObject = new JSONObject(responseData);
+                        JSONObject bookData = jsonObject.getJSONObject("ISBN:" + isbn);
+
+                        // Get the title
+                        String title = bookData.optString("title", "Unknown Title");
+                        Log.d("Data", "Title: " + title);
+
+                        // Get the cover image URL if available
+                        String imageUrl = "no url";
+                        if (bookData.has("cover")) {
+                            imageUrl = bookData.getJSONObject("cover").optString("medium", "no url");
+                            Log.d("Data", "Cover Image URL: " + imageUrl);
+                        }
+
+                        // Pass the data to the callback
+                        callback.onBooksFetched(title, imageUrl);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.d("Data", "Error parsing book details: " + e.getMessage());
+                        callback.onBook_notFetched();  // Handle parsing failure
+                    }
+                } else {
+                    callback.onBooksFetched("Unknown Title", "no url");  // Handle non-successful response
+                }
             }
         });
     }

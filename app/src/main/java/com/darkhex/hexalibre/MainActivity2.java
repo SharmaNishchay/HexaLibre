@@ -1,5 +1,7 @@
 package com.darkhex.hexalibre;
 
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,8 +10,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,21 +44,30 @@ public class MainActivity2 {
         ProgressBar progressBar = activity.findViewById(R.id.progressBar2);
         progressBar.setVisibility(View.VISIBLE);
 
-//        Data data = new Data();
+
 
         // Fetch books from server asynchronously
-//        data.getBooks(new BookFetchCallback() {
-//            @Override
-//            public void onBooksFetched(List<Book> books) {
-//                bookAdapter = new BookAdapter(books);
-//                recyclerViewBooks.setAdapter(bookAdapter);
-//                recyclerViewBooks.setLayoutManager(new GridLayoutManager(activity.getContext(), 2));
-//                progressBar.setVisibility(View.GONE);
-//                recyclerViewBooks.setVisibility(View.VISIBLE);
-////                recyclerViewCategories.setVisibility(View.VISIBLE);
-//
-//            }
-//        });
+//        List<String>test=new ArrayList<>();
+        Get_paths p = new Get_paths();
+        p.getPath("College1",cols -> {
+            List<String> Booklist = new ArrayList<>(cols);
+            Data data = new Data();
+            data.Allbooks(Booklist,new BookFetchCallback() {
+                @Override
+                public void onBooksFetched(List<Book> books) {
+                    bookAdapter = new BookAdapter(books);
+                    recyclerViewBooks.setAdapter(bookAdapter);
+                    recyclerViewBooks.setLayoutManager(new GridLayoutManager(activity.getContext(), 2));
+                    progressBar.setVisibility(View.GONE);
+                    recyclerViewBooks.setVisibility(View.VISIBLE);
+//                recyclerViewCategories.setVisibility(View.VISIBLE);
+
+                }
+            });
+                });
+//        test.add("9780733426094");
+//        test.add("9781603095426");
+
 
         // Sample category list for categories
         List<Cat> cats = new ArrayList<>();
@@ -69,28 +87,6 @@ public class MainActivity2 {
         recyclerViewCategories.setVisibility(View.VISIBLE);
 
 
-        List<Book>books=new ArrayList<>();
-        books.add(new Book("Book1","img"));
-        books.add(new Book("Book2","img"));
-        books.add(new Book("Book3","img"));
-        books.add(new Book("Book4","img"));
-        books.add(new Book("Book5","img"));
-        books.add(new Book("Book6","img"));
-        books.add(new Book("Book7","img"));
-        books.add(new Book("Book8","img"));
-        books.add(new Book("Book9","img"));
-        books.add(new Book("Book10","img"));
-        books.add(new Book("Book11","img"));
-        books.add(new Book("Book12","img"));
-        books.add(new Book("Book13","img"));
-        books.add(new Book("Book14","img"));
-        books.add(new Book("Book15","img"));
-        books.add(new Book("Book16","img"));
-        bookAdapter = new BookAdapter(books);
-        recyclerViewBooks.setAdapter(bookAdapter);
-        recyclerViewBooks.setLayoutManager(new GridLayoutManager(activity.getContext(), 2));
-        progressBar.setVisibility(View.GONE);
-        recyclerViewBooks.setVisibility(View.VISIBLE);
     }
 
     // Filter books based on query
@@ -101,21 +97,9 @@ public class MainActivity2 {
     }
 }
 
-//====================================================================
-// Book Class and Book Adapter
-class Book {
-    public String name;
-    public String imageUrl;
-
-    public Book(String name, String imageUrl) {
-        this.name = name;
-        this.imageUrl = imageUrl;
-    }
-}
-
 class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     private final List<Book> books;
-    private List<Book> filteredBooks;
+    private final List<Book> filteredBooks;
 
     public BookAdapter(List<Book> books) {
         this.books = books;
@@ -134,7 +118,26 @@ class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         Book book = filteredBooks.get(position);
         holder.nameTextView.setText(book.name);
         // Load image using Glide or Picasso
-        // Glide.with(holder.itemView.getContext()).load(book.imageUrl).into(holder.imageView);
+        ProfileActivity p = new ProfileActivity();
+        if (p.isValidUrl(book.imageUrl)) {
+            Glide.with(holder.itemView.getContext())
+                    .load(book.imageUrl)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            if (e != null) e.logRootCauses("GlideError");
+                            Log.d("GlideError", "Image load failed for URL: " + book.imageUrl+" "+e);
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            return false;
+                        }
+                    })
+                    .into(holder.imageView);
+
+        }
     }
 
     @Override

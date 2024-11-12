@@ -19,17 +19,23 @@ public class Get_paths {
     private boolean data=false;
     FirebaseDatabase db;
     DatabaseReference reference;
-    public void getPath(CollegeFetchCallback callback){
+    public void getPath(String path, PathFetchCallback callback){
         db=FirebaseDatabase.getInstance();
-        reference=db.getReference("Colleges");
+        if(!("Colleges".equals(path)))
+            reference=db.getReference("Colleges").child(path).child("Books");
+        else
+            reference=db.getReference(path);
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<String>paths=new ArrayList<>();
                 for (DataSnapshot childSnapshot : snapshot.getChildren()){
-                    paths.add(Objects.requireNonNull(childSnapshot.child("Name").getValue()).toString());
+                    if("Colleges".equals(path))
+                        paths.add(Objects.requireNonNull(childSnapshot.child("Name").getValue()).toString());
+                    else
+                        paths.add(Objects.requireNonNull(childSnapshot.getKey()));
                 }
-                callback.onCollegeFetched(paths);
+                callback.onPathFetched(paths);
             }
 
             @Override
