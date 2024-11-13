@@ -40,7 +40,6 @@ dependencies {
     implementation libs.navigation.ui
     implementation libs.navigation.fragment
     implementation libs.firebase.database
-    implementation libs.recyclerview
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
@@ -53,16 +52,13 @@ dependencies {
     implementation libs.converter.gson // Gson converter (optional)
     implementation libs.okhttp // Latest OkHttp version
     implementation libs.logging.interceptor // For logging HTTP requests
+    implementation libs.glide
     annotationProcessor libs.compiler
     implementation libs.barcode.scanning
     implementation libs.camera.core
     implementation libs.camera.camera2
     implementation libs.camera.lifecycle
     implementation libs.camera.view
-    implementation libs.barcode.scanning.v1702
-    implementation libs.okhttp.v493
-    implementation libs.glide // or the latest Glide version
-    annotationProcessor libs.compiler
-
+    implementation 'com.google.mlkit:barcode-scanning:17.0.2'
 
 }
