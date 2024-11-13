@@ -27,6 +27,7 @@
                 android:padding="16dp"
                 android:text=""
                 android:textColor="#000000"
+                android:fontFamily="google:/fonts/tt-octosquares"
                 android:textSize="18sp" />
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
