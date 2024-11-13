@@ -1,10 +1,21 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
-    android:viewportWidth="960"
-    android:viewportHeight="960"
+    android:viewportWidth="100"
+    android:viewportHeight="100"
     android:tint="?attr/colorControlNormal">
+
+  <!-- Outer frame -->
   <path
       android:fillColor="@android:color/white"
-      android:pathData="M40,760L40,200L120,200L120,760L40,760ZM160,760L160,200L240,200L240,760L160,760ZM280,760L280,200L320,200L320,760L280,760ZM400,760L400,200L480,200L480,760L400,760ZM520,760L520,200L640,200L640,760L520,760ZM680,760L680,200L720,200L720,760L680,760ZM800,760L800,200L920,200L920,760L800,760Z"/>
+      android:pathData="M10,10 L30,10 L30,15 L15,15 L15,30 L10,30 L10,10Z
+                          M70,10 L90,10 L90,30 L85,30 L85,15 L70,15 L70,10Z
+                          M10,70 L10,90 L30,90 L30,85 L15,85 L15,70 L10,70Z
+                          M70,85 L85,85 L85,70 L90,70 L90,90 L70,90 Z" />
+
+  <!-- Horizontal scanning lines -->
+  <path
+      android:fillColor="@android:color/white"
+      android:pathData="M15,50 L85,50 L85,55 L15,55 L15,50 Z
+                          M15,40 L85,40 L85,45 L15,45 L15,40 Z"/>
 </vector>
