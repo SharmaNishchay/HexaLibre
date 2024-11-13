@@ -116,7 +116,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:backgroundTint="#B7AB98"
+            android:backgroundTint="#000000"
             android:layout_alignParentBottom="true"
             app:cardCornerRadius="4dp"
             android:id="@+id/home_bottom"/>
@@ -125,7 +125,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/circular_bg"
-            android:backgroundTint="#B7AB98"
+            android:backgroundTint="#000000"
             android:padding="8dp"
             android:layout_marginBottom="-35dp"
             android:layout_above="@+id/home_bottom"
