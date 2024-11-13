@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@android:color/white"/> <!-- Background color -->
+    <!-- Background color with gradient effect -->
+    <gradient
+        android:startColor="#B7AB98"
+    android:endColor="#D4C9B7"
+    android:angle="270" />
+
+
+    <!-- Subtle border with light contrast -->
     <stroke
-        android:width="2dp"
-        android:color="#FF0000"/> <!-- Border color -->
-    <corners android:radius="4dp"/> <!-- Corner radius -->
+        android:width="1dp"
+        android:color="#D0C4B1" /> <!-- Light beige color for border -->
+
+    <!-- Soft shadow effect around the box -->
+    <solid android:color="#B7AB98" /> <!-- Same color for a soft shadow effect -->
+    <padding
+        android:left="16dp"
+        android:right="16dp"
+        android:top="16dp"
+        android:bottom="16dp" />
 </shape>
