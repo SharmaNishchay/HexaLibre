@@ -14,21 +14,31 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_margin="16dp"
-            app:cardBackgroundColor="@android:color/white"
+            app:cardBackgroundColor="@android:color/black"
             app:cardCornerRadius="4dp"
             app:cardElevation="8dp">
-
-            <TextView
-                android:id="@+id/elevated_text_view"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/textview_border"
-                android:gravity="center"
-                android:padding="16dp"
-                android:text=""
-                android:textColor="#000000"
-                android:fontFamily="google:/fonts/tt-octosquares"
-                android:textSize="18sp" />
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="@drawable/about"/>
+
+                <TextView
+                    android:id="@+id/elevated_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+
+                    android:backgroundTint="@color/white"
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:fontFamily="google:/fonts/tt-octosquares"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
