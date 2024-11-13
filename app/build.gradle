@@ -60,7 +60,5 @@ dependencies {
     implementation libs.camera.lifecycle
     implementation libs.camera.view
     implementation 'com.google.mlkit:barcode-scanning:17.0.2'
-        implementation 'com.google.android.material:material:1.6.0'  // For Material Components (if not added)
-        implementation 'androidx.core:core-ktx:1.6.0'  // For TypefaceHelper and Font access
 
 }
