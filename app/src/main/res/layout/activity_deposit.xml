@@ -1,0 +1,47 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#1f2122"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:layout_marginBottom="12dp">
+
+    <!-- Row for Book Title -->
+    <TextView
+        android:id="@+id/tvBookTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Book Title"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:paddingBottom="4dp"
+        android:layout_marginBottom="8dp"
+        android:layout_gravity="start" />
+
+    <!-- Row for Date and Deposit Button -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Date"
+            android:textColor="#A0A0A0"
+            android:textSize="14sp"
+            android:layout_gravity="start" />
+
+        <Button
+            android:id="@+id/btnDeposit"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Deposit"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_deposit_background"
+            android:layout_marginStart="12dp" />
+    </LinearLayout>
+</LinearLayout>
