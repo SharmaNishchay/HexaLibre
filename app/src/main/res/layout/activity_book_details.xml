@@ -25,7 +25,7 @@
         android:textSize="24sp"
         android:textColor="#FFFFFF"
         android:gravity="center"
-        android:layout_weight="10"
+        android:layout_weight="50"
         android:layout_marginBottom="20dp"/>
 
     <!-- Book Details Section -->
@@ -60,7 +60,6 @@
         android:text="Hold"
         android:textColor="#FFFFFF"
         android:background="@drawable/button_hold_background"
-        android:layout_weight="10"
         android:layout_marginBottom="20dp"/>
 
     <!-- Issue Button -->
@@ -71,6 +70,6 @@
         android:text="Issue"
         android:textColor="#FFFFFF"
         android:background="@drawable/button_issue_background"
-        android:layout_weight="10"/>
+/>
 
 </LinearLayout>
