@@ -1,6 +1,7 @@
 package com.darkhex.hexalibre.ui.home;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.Html;
@@ -27,6 +28,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.darkhex.hexalibre.Book;
+import com.darkhex.hexalibre.BookDescription;
 import com.darkhex.hexalibre.BookSearch;
 import com.darkhex.hexalibre.BookSearchCallback;
 import com.darkhex.hexalibre.MainActivity2;
@@ -283,5 +286,6 @@ public class HomeFragment extends Fragment {
             Toast.makeText(requireContext(), "Camera permission is required to use this feature", Toast.LENGTH_SHORT).show();
         }
     }
+
 }
 

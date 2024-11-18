@@ -30,7 +30,7 @@ public class Data {
             showPreview(isbn, new oneBookCallback() {
                 @Override
                 public void onBooksFetched(String title, String url) {
-                    books.add(new Book(title, url));
+                    books.add(new Book(title, url,isbn));
                     latch.countDown();  // Decrement the latch count when a book is fetched
                 }
 
@@ -67,7 +67,7 @@ public class Data {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                Log.d("Data", "Failed to fetch data: " + e.getMessage());
+                Log.d("Data", "Failed to fetch data: "+isbn + e.getMessage());
                 callback.onBook_notFetched();  // Invoke callback even on failure
             }
 
@@ -75,20 +75,18 @@ public class Data {
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 if (response.isSuccessful() && response.body() != null) {
                     String responseData = response.body().string();
-                    Log.d("Data", "Success to fetch data for ISBN " + isbn);
                     try {
                         JSONObject jsonObject = new JSONObject(responseData);
                         JSONObject bookData = jsonObject.getJSONObject("ISBN:" + isbn);
 
+
                         // Get the title
                         String title = bookData.optString("title", "Unknown Title");
-                        Log.d("Data", "Title: " + title);
 
                         // Get the cover image URL if available
                         String imageUrl = "no url";
                         if (bookData.has("cover")) {
                             imageUrl = bookData.getJSONObject("cover").optString("medium", "no url");
-                            Log.d("Data", "Cover Image URL: " + imageUrl);
                         }
 
                         // Pass the data to the callback
@@ -100,7 +98,7 @@ public class Data {
                         callback.onBook_notFetched();  // Handle parsing failure
                     }
                 } else {
-                    callback.onBooksFetched("Unknown Title", "no url");  // Handle non-successful response
+                    callback.onBook_notFetched();  // Handle non-successful response
                 }
             }
         });
