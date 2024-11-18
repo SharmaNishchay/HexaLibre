@@ -60,5 +60,6 @@ dependencies {
     implementation libs.camera.lifecycle
     implementation libs.camera.view
     implementation 'com.google.mlkit:barcode-scanning:17.0.2'
+    implementation libs.lottie
 
 }
