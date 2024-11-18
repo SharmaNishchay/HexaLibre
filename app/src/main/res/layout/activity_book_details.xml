@@ -12,8 +12,8 @@
         android:id="@+id/bookImage"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-    android:scaleType="fitCenter"
-    android:layout_marginBottom="20dp"/>
+        android:scaleType="fitCenter"
+        android:layout_marginBottom="20dp" />
 
     <!-- Book Title Section -->
     <TextView
@@ -25,7 +25,7 @@
         android:textColor="#FFFFFF"
         android:gravity="center"
         android:layout_weight="50"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20dp" />
 
     <!-- Book Details Section -->
     <TextView
@@ -37,7 +37,7 @@
         android:textColor="#FFFFFF"
         android:gravity="start"
         android:layout_weight="30"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20dp" />
 
     <!-- Book Availability Section -->
     <TextView
@@ -49,7 +49,7 @@
         android:textColor="#FFFFFF"
         android:gravity="start"
         android:layout_weight="10"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20dp" />
 
     <!-- Hold Button -->
     <Button
@@ -59,16 +59,25 @@
         android:text="Hold"
         android:textColor="#FFFFFF"
         android:background="@drawable/button_hold_background"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20dp" />
 
     <!-- Issue Button -->
     <Button
-        android:id="@+id/Button_cancel"
+        android:id="@+id/issueButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Issue"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/button_issue_background"
+        android:layout_marginBottom="20dp" />
+
+    <!-- Cancel Button -->
+    <Button
+        android:id="@+id/cancelButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Cancel"
         android:textColor="#FFFFFF"
-        android:background="@drawable/button_issue_background"
-/>
+        android:background="@drawable/button_cancel" />
 
 </LinearLayout>
