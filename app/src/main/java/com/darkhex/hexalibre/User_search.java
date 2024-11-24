@@ -21,7 +21,7 @@ public class User_search {
         DatabaseReference usersRef;
         String data;
         if(target.equals("email")||target.equals("rollNo")) {
-            usersRef = database.getReference("Colleges").child("College1").child("Users");
+            usersRef = database.getReference("Colleges").child("College"+college).child("Users");
             data="uid";
         }
         else {

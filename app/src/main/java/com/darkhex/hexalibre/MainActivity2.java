@@ -35,27 +35,25 @@ public class MainActivity2 {
     private boolean isFetched;
     private boolean isScrolled;
     private List<String>test=new ArrayList<>();
+    private final View activity;
 
 
 
     // Constructor
     public MainActivity2(View activity) {
-        initializeRecyclerView(activity);
+        this.activity=activity;
+        initializeRecyclerView();
     }
 
     // Initialize RecyclerView
-    private void initializeRecyclerView(View activity) {
+    private void initializeRecyclerView() {
         recyclerViewBooks = activity.findViewById(R.id.recycler_view);
         recyclerViewCategories = activity.findViewById(R.id.categories);
         ProgressBar progressBar = activity.findViewById(R.id.progressBar2);
         progressBar.setVisibility(View.VISIBLE);
         bookAdapter = new BookAdapter(new ArrayList<>(), book -> {
-            // Handle book click here
-            Intent intent=new Intent(activity.getContext(),BookDescription.class);
-            intent.putExtra("ISBN",book.isbn);
-            activity.getContext().startActivity(intent);
-
-            // You can start a new activity or show a dialog with book details
+            MainActivity m=(MainActivity)activity.getContext();
+            m.BookDescriptionService(activity,book);
         });
         recyclerViewBooks.setAdapter(bookAdapter);
         recyclerViewBooks.setLayoutManager(new GridLayoutManager(activity.getContext(), 2));
@@ -63,7 +61,7 @@ public class MainActivity2 {
 
         // Fetch books from server asynchronously
         Get_paths p = new Get_paths();
-        p.getPath("College1",cols -> {
+        p.getPath("College1","",cols -> {
             List<String> Booklist = new ArrayList<>(cols);
             test.addAll(cols);
             isFetched=true;
