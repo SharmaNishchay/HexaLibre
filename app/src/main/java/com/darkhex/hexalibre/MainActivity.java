@@ -37,6 +37,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private boolean doubleBackToExitPressedOnce = false;
     private Toast exitToast;
+    public String UserId;
+    private String C_Id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +55,9 @@ public class MainActivity extends AppCompatActivity {
 
         com.darkhex.hexalibre.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        Intent i=getIntent();
+        UserId=i.getStringExtra("uid");
+        C_Id=i.getStringExtra("c_id");
         NavigationView navigationView = binding.navView;
         View nav_header = navigationView.getHeaderView(0);
         // Profile setup
@@ -147,6 +153,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void BookDescriptionService(View activity,Book book){
+        Intent intent=new Intent(activity.getContext(),BookDescription.class);
+        intent.putExtra("ISBN",book.isbn);
+        intent.putExtra("User-Id",UserId);
+        intent.putExtra("C-Id",C_Id);
+        activity.getContext().startActivity(intent);
+    }
+
     public void sign_out(){
         mGoogleSignInClient.signOut().addOnCompleteListener(MainActivity.this, task -> {
             MainActivity.this.startActivity(new Intent(MainActivity.this, LoginActivity.class));
@@ -205,5 +219,19 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return super.dispatchTouchEvent(event);
+    }
+    public void set_history(HistoryCallback callback){
+        IssueService s=new IssueService();
+        s.getHistoryValues(UserId, C_Id, new HistoryCallback() {
+            @Override
+            public void onHistoryFetched(List<History> histories) {
+                callback.onHistoryFetched(histories);
+            }
+
+            @Override
+            public void onHistory_notFetched() {
+                callback.onHistory_notFetched();
+            }
+        });
     }
 }

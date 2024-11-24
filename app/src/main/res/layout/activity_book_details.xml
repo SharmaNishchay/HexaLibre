@@ -2,18 +2,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="#000000"
     android:padding="16dp"
     android:weightSum="100">
 
     <!-- Book Image Section -->
-    <ImageView
-        android:id="@+id/bookImage"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="fitCenter"
-        android:layout_marginBottom="20dp" />
+        android:layout_height="200dp">
+        <ImageView
+            android:id="@+id/bookImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="fitCenter"
+            android:layout_marginBottom="20dp"
+            />
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/image_loading_animation2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/image_loading"/>
+    </RelativeLayout>
+
 
     <!-- Book Title Section -->
     <TextView
@@ -25,7 +40,8 @@
         android:textColor="#FFFFFF"
         android:gravity="center"
         android:layout_weight="50"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="20dp"
+        android:visibility="gone"/>
 
     <!-- Book Details Section -->
     <TextView

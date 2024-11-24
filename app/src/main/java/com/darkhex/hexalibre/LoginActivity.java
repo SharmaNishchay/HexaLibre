@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
 //        progressBar.setVisibility(View.VISIBLE);
 
         Get_paths p = new Get_paths();
-        p.getPath("Colleges",cols -> {
+        p.getPath("Colleges","",cols -> {
             List<String> collegeList = new ArrayList<>();
             collegeList.add("Select College");
             collegeList.addAll(cols);
@@ -129,18 +129,18 @@ public class LoginActivity extends AppCompatActivity {
         userSearch.searchUserByEmail("",college, "Name", new UserSearchCallback(){
 
             @Override
-            public void onUserFound(String uid) {
-                userSearch.searchUserByEmail(uid, email, "email", new UserSearchCallback() {
+            public void onUserFound(String c_id) {
+                userSearch.searchUserByEmail(c_id, email, "email", new UserSearchCallback() {
                     @Override
                     public void onUserFound(String uid) {
                         callback.onResult(true);
-                        launchMainActivity(uid);
+                        launchMainActivity(uid,c_id);
                     }
 
                     @Override
                     public void onUserNotFound() {
                         if (act.equals("notStored")) {
-                            launchSignInActivity(name, email, uid);
+                            launchSignInActivity(name, email, c_id);
                         }
                         callback.onResult(false);
                     }
@@ -154,9 +154,10 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void launchMainActivity(String uid) {
+    private void launchMainActivity(String uid,String c_id) {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         intent.putExtra("uid", uid);
+        intent.putExtra("c_id", c_id);
         startActivity(intent);
         finish();
     }

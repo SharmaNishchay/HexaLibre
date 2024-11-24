@@ -19,7 +19,7 @@ public class Get_paths {
     private boolean data=false;
     FirebaseDatabase db;
     DatabaseReference reference;
-    public void getPath(String path, PathFetchCallback callback){
+    public void getPath(String path,String uid, PathFetchCallback callback){
         db=FirebaseDatabase.getInstance();
         if(!("Colleges".equals(path)))
             reference=db.getReference("Colleges").child(path).child("Books");

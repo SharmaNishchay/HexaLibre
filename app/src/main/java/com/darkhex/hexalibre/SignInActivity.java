@@ -45,13 +45,14 @@ public class SignInActivity extends AppCompatActivity {
             String rollNo = editTextRollNo.getText().toString().trim();
             String branch = editTextBranch.getText().toString().trim();
             String semester = editTextSemester.getText().toString().trim();
-            String uid=intent.getStringExtra("c_id")+"@"+rollNo;
+
 
             if (rollNo.isEmpty() || branch.isEmpty() || semester.isEmpty()) {
                 Toast.makeText(SignInActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             } else {
                 // Handle form submission
-                user(rollNo,branch,semester,uid,"College1");
+                String uid=intent.getStringExtra("c_id")+"@"+rollNo;
+                user(rollNo,branch,semester,uid,intent.getStringExtra("c_id"));
 
             }
         });
@@ -68,14 +69,14 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onUserNotFound() {
                 // Handle case where user is not found
-                AddUser(rollNo,branch,semester,uid);
+                AddUser(rollNo,branch,semester,uid,college);
             }
         });
     }
 
-    public void AddUser(String rollNo,String branch, String semester,String uid){
+    public void AddUser(String rollNo,String branch, String semester,String uid,String c_id){
         db=FirebaseDatabase.getInstance();
-        reference= db.getReference("Colleges").child("College1").child("Users");
+        reference= db.getReference("Colleges").child("College"+c_id).child("Users");
         String name=intent.getStringExtra("Name");
         String Email=intent.getStringExtra("Email");
         UserProfile users=new UserProfile(name,Email,rollNo,branch,semester,uid);
@@ -85,6 +86,8 @@ public class SignInActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
 
                 Intent intent1=new Intent(SignInActivity.this,MainActivity.class);
+                intent1.putExtra("uid", uid);
+                intent1.putExtra("c_id", c_id);
                 startActivity(intent1);
             }
         });
