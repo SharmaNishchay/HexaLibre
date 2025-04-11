@@ -70,7 +70,20 @@ HexaLibre is a prototype Android application designed to digitalize and simplify
 
 ---
 
-## Screenshots
+## 🖼️ Screenshots
+
+ ![screenshot-2](screenshot-2)
+
+
+ ![screenshot-4](screenshot-4)
+
+ ![screenshot-3](screenshot-3)
+
+![screenshot-1](screenshot-1)
+
+![screenshot-5](screenshot-5)
+
+![screenshot-6](screenshot-6)
 
 
 ## 📝 License
