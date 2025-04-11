@@ -88,7 +88,7 @@ HexaLibre is a prototype Android application designed to digitalize and simplify
 
 ## 📝 License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [Proprietary License](LICENSE).
 
 ---
 
