@@ -7,7 +7,6 @@ HexaLibre is a prototype Android application designed to digitalize and simplify
 ---
 
 ## 📱 Features
-
 - 🔐 **Secure OAuth Login**  
   Sign in using your college-issued email via Google OAuth with domain restriction.
 
@@ -17,14 +16,32 @@ HexaLibre is a prototype Android application designed to digitalize and simplify
 - 📚 **Book Availability Status**  
   Instantly check whether a book is available, issued, or on hold.
 
+- 🔄 **Real-Time Book Status Updates**  
+  All book-related actions reflect instantly across the platform.
+
+- 🔎 **Search & Filter**  
+  Find books quickly with advanced search and real-time availability filtering.
+
 - ⏳ **Transaction History Tracking**  
   View a full history of issued and returned books with timestamps.
 
 - ⏰ **Return Notifications**  
   Get notified before book return deadlines to avoid fines.
 
+- 🔁 **Hold Feature with Preferred Issue Timing**  
+  Place books on hold and choose your preferred time slot for pickup.
+
+- 💯 **Honor Score System**  
+  Earn points for timely returns and responsible usage; misuse leads to score penalties.
+
+- 💸 **Fine Tracking (Without Auto Fee Addition)**  
+  Students and admins are notified of fines, but charges aren't automatically applied to fee portals.
+
+- 📬 **Notify Me Feature**  
+  Get alerts when currently unavailable books are restocked or returned.
+
 - 🌓 **Modern UI with Dark Mode**  
-  Dark-themed user interface with transitions and animations.
+  Smooth, responsive design with transitions and a dark/light mode toggle.
 
 ---
 
