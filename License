@@ -1,32 +1,32 @@
-HexaLibre Library App Proprietary License
+HexaLibre Library App Proprietary License  
+Version 1.1, June 2025  
+© 2025 Nishchay Sharma. All rights reserved.
 
-Version 1.0, September 2024
+1. License Grant:  
+   This software is licensed, not sold. Subject to the terms of this License, the Licensor grants the Licensee a limited, non-transferable, non-exclusive, revocable license to use and evaluate the HexaLibre Library App solely for non-commercial, internal educational or demonstration purposes.
 
-© 2024 Nishchay Sharma. All rights reserved.
+2. Restrictions:  
+   The Licensee shall not:
+   - Use the software or any part of it for commercial purposes.
+   - Modify, adapt, translate, or create derivative works based on the software.
+   - Reverse engineer, decompile, disassemble, or otherwise attempt to derive the source code.
+   - Redistribute, sublicense, lease, publish, or sell the software or any portion of it.
+   - Use the software as part of any hosted, distributed, or publicly accessible application.
+   - Use the software in any unlawful manner or for any unlawful purpose.
 
-1. License Grant:
-   Subject to the terms and conditions of this License, the Licensor hereby grants the Licensee a limited, non-exclusive, non-transferable, revocable license to use the HexaLibre Library App solely for internal purposes. Licensee may not sublicense, distribute, or otherwise transfer the Software or make it available to any third party.
+3. Ownership:  
+   All intellectual property rights in and to the HexaLibre Library App remain exclusively with the Licensor. This License does not grant any ownership interest or rights not expressly provided.
 
-2. Restrictions:
-   Licensee shall not:
-   - Modify, adapt, translate, or create derivative works of the Software.
-   - Reverse engineer, decompile, disassemble, or attempt to derive the source code of the Software.
-   - Redistribute, sell, lease, or sublicense the Software to any third party.
-   - Use the Software in any unlawful manner or for any unlawful purpose.
+4. Termination:  
+   This License is effective until terminated. It will terminate automatically if the Licensee breaches any of the terms. Upon termination, the Licensee must immediately cease all use of the software and destroy all copies.
 
-3. Ownership:
-   The Software, including all intellectual property rights, remains the exclusive property of the Licensor. This License does not grant any ownership rights in the Software.
+5. Warranty Disclaimer:  
+   The software is provided “AS IS” without any warranties of any kind, whether express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or non-infringement.
 
-4. Termination:
-   This License is effective until terminated. The Licensor may terminate this License at any time if the Licensee breaches any of the terms. Upon termination, the Licensee must immediately cease all use of the Software and destroy all copies.
+6. Limitation of Liability:  
+   In no event shall the Licensor be liable for any direct, indirect, incidental, or consequential damages arising from the use of or inability to use the software, even if advised of the possibility of such damages.
 
-5. Disclaimer of Warranty:
-   The Software is provided "AS IS" without any warranty of any kind, either express or implied, including but not limited to the implied warranties of merchantability, fitness for a particular purpose, or non-infringement.
+7. Governing Law:  
+   This License shall be governed by and construed in accordance with the laws of India. However, the Licensor reserves the right to pursue legal action for infringement in any jurisdiction where such infringement occurs.
 
-6. Limitation of Liability:
-   In no event shall the Licensor be liable for any damages arising out of the use of or inability to use the Software, even if the Licensor has been advised of the possibility of such damages.
-
-7. Governing Law:
-   This License shall be governed by and construed in accordance with the laws of India.
-
-For further inquiries, contact: darkhex.hq@gmail.com
+For questions or permission inquiries, contact: darkhex.hq@gmail.com
